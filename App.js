@@ -10,6 +10,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as SplashScreen from "expo-splash-screen";
 
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -20,11 +21,16 @@ import colors from "./assets/colors/colors";
 import HomeScreen from "./src/screens/HomeScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
 import MeScreen from "./src/screens/MeScreen";
-
 import TestScreen from "./src/screens/TestScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+SplashScreen.preventAutoHideAsync()
+  .then((result) =>
+    console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`)
+  )
+  .catch(console.warn); // it's good to explicitly catch and inspect any error
 
 const TabNavigator = () => {
   return (
@@ -72,24 +78,33 @@ const TabNavigator = () => {
   );
 };
 
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="TabNavigator"
-          component={TabNavigator}
-          //options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TestScreen"
-          component={TestScreen}
-          //options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+class App extends React.Component {
+  componentDidMount() {
+    // Hides native splash screen after 1s
+    setTimeout(async () => {
+      await SplashScreen.hideAsync();
+    }, 1000);
+  }
+
+  render() {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="TabNavigator"
+            component={TabNavigator}
+            //options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TestScreen"
+            component={TestScreen}
+            //options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   tabBar: {
