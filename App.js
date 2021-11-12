@@ -15,6 +15,7 @@ import * as SplashScreen from "expo-splash-screen";
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 
 import colors from "./assets/colors/colors";
 
@@ -22,6 +23,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
 import MeScreen from "./src/screens/MeScreen";
 import TestScreen from "./src/screens/TestScreen";
+import CustomerDetailScreen from "./src/screens/CustomerDetailScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -49,7 +51,7 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
-              name="lightning-bolt"
+              name="lightning-bolt-outline"
               size={32}
               color={color}
             />
@@ -61,7 +63,7 @@ const TabNavigator = () => {
         component={CustomersScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <SimpleLineIcons name="diamond" size={32} color={color} />
+            <SimpleLineIcons name="diamond" size={25} color={color} />
           ),
         }}
       />
@@ -70,7 +72,7 @@ const TabNavigator = () => {
         component={MeScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" size={32} color={color} />
+            <FontAwesome name="star-o" size={32} color={color} />
           ),
         }}
       />
@@ -83,7 +85,7 @@ class App extends React.Component {
     // Hides native splash screen after 1s
     setTimeout(async () => {
       await SplashScreen.hideAsync();
-    }, 1000);
+    }, 200);
   }
 
   render() {
@@ -93,12 +95,41 @@ class App extends React.Component {
           <Stack.Screen
             name="TabNavigator"
             component={TabNavigator}
-            //options={{ headerShown: false }}
+            options={{
+              title: "Eureka Screen",
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: colors.theme,
+              },
+              headerTitleStyle: { color: "white" },
+              headerTintColor: colors.white,
+            }}
           />
           <Stack.Screen
             name="TestScreen"
             component={TestScreen}
-            //options={{ headerShown: false }}
+            options={{
+              title: "Test Screen",
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: colors.orange,
+              },
+              headerTitleStyle: { color: "white" },
+              headerTintColor: colors.white,
+            }}
+          />
+          <Stack.Screen
+            name="CustomerDetailScreen"
+            component={CustomerDetailScreen}
+            options={{
+              title: "Customer Detail Screen",
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: colors.theme,
+              },
+              headerTitleStyle: { color: "white" },
+              headerTintColor: colors.white,
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -108,7 +139,7 @@ class App extends React.Component {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
