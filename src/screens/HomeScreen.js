@@ -37,12 +37,6 @@ const HomeScreen = ({ navigation }) => {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.iconTitle}>
-            <MaterialCommunityIcons
-              name="lightning-bolt-outline"
-              size={32}
-              color={colors.white}
-              style={styles.icon}
-            />
             <Text style={styles.pageTitle}>Good Morning</Text>
           </View>
 
@@ -75,6 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginTop: 60,
     fontFamily: "BodoniBold",
+    marginLeft: 10,
   },
   icon: { marginTop: 70, marginHorizontal: 10, color: colors.yellow },
   search: {
