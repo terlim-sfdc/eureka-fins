@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
+import { DataTable } from "react-native-paper";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
@@ -134,6 +135,43 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
         </View>
+
+        {/* Top performers */}
+        {/* https://callstack.github.io/react-native-paper/data-table.html */}
+        <DataTable style={styles.topPerformersTable}>
+          <DataTable.Header>
+            <DataTable.Title style={{ flex: 1, justifyContent: "center" }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  alignContent: "center",
+                  fontWeight: "bold",
+                  color: colors.black,
+                }}
+              >
+                Top Contributors
+              </Text>
+            </DataTable.Title>
+          </DataTable.Header>
+
+          <DataTable.Row>
+            <DataTable.Cell style={styles.cellOne}>1.</DataTable.Cell>
+            <DataTable.Cell style={styles.cellTwo}>Li Xinyi</DataTable.Cell>
+            <DataTable.Cell style={styles.cellThree}>$3,430.70</DataTable.Cell>
+          </DataTable.Row>
+
+          <DataTable.Row>
+            <DataTable.Cell style={styles.cellOne}>2.</DataTable.Cell>
+            <DataTable.Cell style={styles.cellTwo}>Sarah Tan</DataTable.Cell>
+            <DataTable.Cell style={styles.cellThree}>$3,308.10</DataTable.Cell>
+          </DataTable.Row>
+
+          <DataTable.Row>
+            <DataTable.Cell style={styles.cellOne}>3.</DataTable.Cell>
+            <DataTable.Cell style={styles.cellTwo}>Sam Man</DataTable.Cell>
+            <DataTable.Cell style={styles.cellThree}>$308.10</DataTable.Cell>
+          </DataTable.Row>
+        </DataTable>
       </ScrollView>
     );
 };
@@ -212,6 +250,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     alignSelf: "center",
   },
+  topPerformersTable: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    width: "88%",
+    alignSelf: "center",
+    marginBottom: 15,
+  },
+  cellOne: { flex: 1, justifyContent: "center", padding: 10 },
+  cellTwo: { flex: 10, justifyContent: "flex-start", padding: 10 },
+  cellThree: { flex: 10, justifyContent: "flex-end", padding: 10 },
 });
 
 export default HomeScreen;
