@@ -41,16 +41,14 @@ const CustomersScreen = ({ navigation }) => {
   } else
     return (
       // Overall Container Wrapper
-      <ScrollView style={styles.container}>
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        bounces={false}
+        style={styles.container}
+      >
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.iconTitle}>
-            <SimpleLineIcons
-              name="diamond"
-              size={32}
-              color={colors.white}
-              style={styles.icon}
-            />
             <Text style={styles.pageTitle}>Customers</Text>
           </View>
 
@@ -156,6 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginTop: 60,
     fontFamily: "BodoniBold",
+    marginLeft: 10,
   },
   icon: { marginTop: 70, marginHorizontal: 10, color: colors.yellow },
   search: {

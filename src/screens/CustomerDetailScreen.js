@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
@@ -22,14 +23,12 @@ import { useFonts } from "expo-font";
 
 /* Tab View Code */
 const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "#ff4081" }]} />
+  <View style={{ flex: 1, backgroundColor: "#ff4081" }} />
 );
 
 const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
+  <View style={{ flex: 1, backgroundColor: "#673ab7" }} />
 );
-
-const initialLayout = { width: Dimensions.get("window").width };
 
 const renderScene = SceneMap({
   first: FirstRoute,
@@ -40,7 +39,6 @@ const renderScene = SceneMap({
 
 const CustomerDetailScreen = ({ route, navigation }) => {
   const { customer } = route.params;
-  console.log(navigation);
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -52,6 +50,8 @@ const CustomerDetailScreen = ({ route, navigation }) => {
     Bodoni: require("../../assets/fonts/Bodoni.ttf"),
     BodoniBold: require("../../assets/fonts/Bodoni-bold.ttf"),
   });
+
+  const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([

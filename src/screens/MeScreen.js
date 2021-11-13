@@ -6,6 +6,7 @@ import {
   Button,
   StatusBar,
   TextInput,
+  ScrollView,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
@@ -33,16 +34,10 @@ const MeScreen = ({ navigation }) => {
   } else
     return (
       // Overall Container Wrapper
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.iconTitle}>
-            <FontAwesome
-              name="star-o"
-              size={32}
-              color={colors.white}
-              style={styles.icon}
-            />
             <Text style={styles.pageTitle}>Sarah Tan</Text>
           </View>
 
@@ -65,7 +60,7 @@ const MeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("TestScreen")}
           title="Go to Test Screen"
         />
-      </View>
+      </ScrollView>
     );
 };
 
@@ -79,6 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginTop: 60,
     fontFamily: "BodoniBold",
+    marginLeft: 10,
   },
   icon: { marginTop: 67, marginHorizontal: 10, color: colors.yellow },
   search: {
