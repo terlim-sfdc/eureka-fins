@@ -22,140 +22,120 @@ import { useFonts } from "expo-font";
 import customersData from "../../data/customersData";
 import trendingNowData from "../../data/trendingNowData";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import HeaderText from "../components/HeaderText";
+import { headerContainer } from "../styles";
 
 const CustomersScreen = ({ navigation }) => {
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
 
-  {
-    /* load custom fonts */
-  }
-  let [fontsLoaded] = useFonts({
-    Bodoni: require("../../assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("../../assets/fonts/Bodoni-bold.ttf"),
-  });
+  return (
+    // Overall Container Wrapper
+    <ScrollView
+      stickyHeaderIndices={[0]}
+      bounces={false}
+      style={styles.container}
+    >
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={headerContainer}>
+          <HeaderText text="Customers" />
+        </View>
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else
-    return (
-      // Overall Container Wrapper
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        bounces={false}
-        style={styles.container}
+        {/* Search */}
+        <View style={styles.search}>
+          <Feather name="search" style={styles.searchIconStyle} />
+          <TextInput
+            placeholder="Search"
+            style={styles.searchInputStyle}
+            autoCapitalize="none"
+            autoCorrect={false}
+            defaultValue={"Search for customer information, insights"}
+          />
+        </View>
+      </View>
+
+      {/* Content Body */}
+      <Pressable
+        onPress={() => navigation.navigate("TestScreen")}
+        title="Go to Test Screen here"
+        style={styles.addCustomerButton}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.iconTitle}>
-            <Text style={styles.pageTitle}>Customers</Text>
-          </View>
+        <Text style={styles.addCustomerButtonText}>
+          + &nbsp;&nbsp;Add new customer
+        </Text>
+      </Pressable>
 
-          {/* Search */}
-          <View style={styles.search}>
-            <Feather name="search" style={styles.searchIconStyle} />
-            <TextInput
-              placeholder="Search"
-              style={styles.searchInputStyle}
-              autoCapitalize="none"
-              autoCorrect={false}
-              defaultValue={"Search for customer information, insights"}
-            />
-          </View>
-        </View>
+      {/* Customer Cards */}
+      <View style={styles.customerCardTitle}>
+        <Text style={{ fontWeight: "bold", fontSize: 15 }}>Your Customers</Text>
+        <Text>SEE ALL</Text>
+      </View>
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={customersData}
+        keyExtractor={(item) => item.id}
+        renderItem={(customer) => {
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("CustomerDetailScreen", {
+                  customer: customer.item,
+                })
+              }
+            >
+              <View style={styles.customerItem}>
+                <Text style={styles.customerCardName}>
+                  {customer.item.name}
+                </Text>
+                <Text style={styles.customerCardPhone}>
+                  {customer.item.phone}
+                </Text>
+                <Text style={styles.customerCardEmail}>
+                  {customer.item.email}
+                </Text>
+                <Text style={styles.customerCardMemberSince}>
+                  Member Since {customer.item.joindate}
+                </Text>
+                <Text style={styles.customerCardMembershipTier}>
+                  {customer.item.membership}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
 
-        {/* Content Body */}
-        <Pressable
-          onPress={() => navigation.navigate("TestScreen")}
-          title="Go to Test Screen here"
-          style={styles.addCustomerButton}
-        >
-          <Text style={styles.addCustomerButtonText}>
-            + &nbsp;&nbsp;Add new customer
-          </Text>
-        </Pressable>
+      {/* Trending Now Cards */}
+      <View style={styles.trendingNowTitleView}>
+        <Text style={{ fontWeight: "bold", fontSize: 15 }}>Trending Now</Text>
+        <Text>SEE ALL</Text>
+      </View>
 
-        {/* Customer Cards */}
-        <View style={styles.customerCardTitle}>
-          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-            Your Customers
-          </Text>
-          <Text>SEE ALL</Text>
-        </View>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={customersData}
-          keyExtractor={(item) => item.id}
-          renderItem={(customer) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("CustomerDetailScreen", {
-                    customer: customer.item,
-                  })
-                }
-              >
-                <View style={styles.customerItem}>
-                  <Text style={styles.customerCardName}>
-                    {customer.item.name}
-                  </Text>
-                  <Text style={styles.customerCardPhone}>
-                    {customer.item.phone}
-                  </Text>
-                  <Text style={styles.customerCardEmail}>
-                    {customer.item.email}
-                  </Text>
-                  <Text style={styles.customerCardMemberSince}>
-                    Member Since {customer.item.joindate}
-                  </Text>
-                  <Text style={styles.customerCardMembershipTier}>
-                    {customer.item.membership}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-
-        {/* Trending Now Cards */}
-        <View style={styles.trendingNowTitleView}>
-          <Text style={{ fontWeight: "bold", fontSize: 15 }}>Trending Now</Text>
-          <Text>SEE ALL</Text>
-        </View>
-
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={trendingNowData}
-          keyExtractor={(trendingItem) => trendingItem.id}
-          renderItem={(trendingItem) => {
-            return (
-              <TouchableOpacity>
-                <View style={styles.trendingNowItemsView}>
-                  <Image source={trendingItem.item.source} />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </ScrollView>
-    );
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={trendingNowData}
+        keyExtractor={(trendingItem) => trendingItem.id}
+        renderItem={(trendingItem) => {
+          return (
+            <TouchableOpacity>
+              <View style={styles.trendingNowItemsView}>
+                <Image source={trendingItem.item.source} />
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   header: { height: 177, backgroundColor: colors.theme, padding: 10 },
-  iconTitle: { flexDirection: "row" },
-  pageTitle: {
-    fontSize: 30,
-    color: colors.white,
-    justifyContent: "flex-end",
-    marginTop: 60,
-    fontFamily: "BodoniBold",
-    marginLeft: 10,
-  },
   icon: { marginTop: 70, marginHorizontal: 10, color: colors.yellow },
   search: {
     backgroundColor: "#5d4ba3",

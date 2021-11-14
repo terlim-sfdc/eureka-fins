@@ -4,7 +4,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -23,7 +23,9 @@ import HomeScreen from "./src/screens/HomeScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
 import MeScreen from "./src/screens/MeScreen";
 import TestScreen from "./src/screens/TestScreen";
-import CustomerDetailScreen from "./src/screens/CustomerDetailScreen";
+import CustomerDetailScreen from "./src/screens/CustomerDetails/CustomerDetailScreen";
+
+import { useFonts } from "expo-font";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -80,18 +82,30 @@ const TabNavigator = () => {
   );
 };
 
-class App extends React.Component {
-  componentDidMount() {
+const App = () => {
+  // componentDidMount() {
+  //   // Hides native splash screen after 1s
+  //   setTimeout(async () => {
+  //     await SplashScreen.hideAsync();
+  //   }, 200);
+  // }
+
+  let [fontsLoaded] = useFonts({
+    Bodoni: require("./assets/fonts/Bodoni.ttf"),
+    BodoniBold: require("./assets/fonts/Bodoni-bold.ttf"),
+  });
+
+  useEffect(() => {
     // Hides native splash screen after 1s
     setTimeout(async () => {
       await SplashScreen.hideAsync();
     }, 200);
-  }
+  }, []);
 
-  render() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Group>
           <Stack.Screen
             name="TabNavigator"
             component={TabNavigator}
@@ -100,19 +114,6 @@ class App extends React.Component {
               headerShown: false,
               headerStyle: {
                 backgroundColor: colors.theme,
-              },
-              headerTitleStyle: { color: "white" },
-              headerTintColor: colors.white,
-            }}
-          />
-          <Stack.Screen
-            name="TestScreen"
-            component={TestScreen}
-            options={{
-              title: "Test Screen",
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: colors.orange,
               },
               headerTitleStyle: { color: "white" },
               headerTintColor: colors.white,
@@ -131,11 +132,26 @@ class App extends React.Component {
               headerTintColor: colors.white,
             }}
           />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-}
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: "modal" }}>
+          <Stack.Screen
+            name="TestScreen"
+            component={TestScreen}
+            options={{
+              title: "Test Screen",
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: colors.theme,
+              },
+              headerTitleStyle: { color: "white" },
+              headerTintColor: colors.white,
+            }}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const styles = StyleSheet.create({
   tabBar: {

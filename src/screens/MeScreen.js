@@ -58,7 +58,7 @@ const MeScreen = ({ navigation }) => {
         <Text>Customer Content goes here</Text>
         <Button
           onPress={() => navigation.navigate("TestScreen")}
-          title="Go to Test Screen"
+          title="Go to Swipe Cards"
         />
       </ScrollView>
     );

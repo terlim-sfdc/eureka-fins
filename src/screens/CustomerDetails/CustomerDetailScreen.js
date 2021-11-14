@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,10 @@ import {
   ScrollView,
   Dimensions,
   useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
 import AppLoading from "expo-app-loading";
-import colors from "../../assets/colors/colors";
+import colors from "../../../assets/colors/colors";
 import { TabView, SceneMap } from "react-native-tab-view";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -20,20 +21,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 
 import { useFonts } from "expo-font";
-
-/* Tab View Code */
-const FirstRoute = () => (
-  <View style={{ flex: 1, backgroundColor: "#ff4081" }} />
-);
-
-const SecondRoute = () => (
-  <View style={{ flex: 1, backgroundColor: "#673ab7" }} />
-);
-
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-});
+import Statistics from "./Statistics";
+import Recommendations from "./Recommendations";
 
 /* Actual Customer Detail Screen */
 
@@ -47,17 +36,12 @@ const CustomerDetailScreen = ({ route, navigation }) => {
     /* load custom fonts */
   }
   let [fontsLoaded] = useFonts({
-    Bodoni: require("../../assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("../../assets/fonts/Bodoni-bold.ttf"),
+    Bodoni: require("../../../assets/fonts/Bodoni.ttf"),
+    BodoniBold: require("../../../assets/fonts/Bodoni-bold.ttf"),
   });
 
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: "first", title: "First" },
-    { key: "second", title: "Second" },
-  ]);
+  const [index, setIndex] = useState(0);
+  const [page, setPage] = useState("recommendations");
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -149,6 +133,38 @@ const CustomerDetailScreen = ({ route, navigation }) => {
               Total spending so far: ${customer.totalspent}
             </Text>
           </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingVertical: 20,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.RecommendationsButton}
+              onPress={() => {
+                setPage("recommendations");
+              }}
+            >
+              <Text style={styles.RecommendationButtonText}>
+                Recommendations
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.StatisticsButton}
+              onPress={() => {
+                setPage("statistics");
+              }}
+            >
+              <Text style={styles.StatisticsButtonText}>Statistics</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <View style={{ flex: 1 }}> */}
+          {page === "recommendations" && <Recommendations />}
+          {page === "statistics" && <Statistics />}
+          {/* </View> */}
         </View>
       </ScrollView>
     );
@@ -197,7 +213,7 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   customerDetailBox: {
-    height: 252,
+    height: 250,
     backgroundColor: colors.white,
     paddingVertical: 10,
     paddingHorizontal: 5,
@@ -214,8 +230,32 @@ const styles = StyleSheet.create({
   container: {
     marginTop: StatusBar.currentHeight,
   },
-  scene: {
+
+  RecommendationButtonText: {
+    fontSize: 15,
+    color: colors.theme,
+    fontFamily: "BodoniBold",
+    alignContent: "space-between",
+    marginLeft: 8,
+  },
+  StatisticsButtonText: {
+    fontSize: 15,
+    color: colors.theme,
+    fontFamily: "BodoniBold",
+    alignContent: "space-between",
+    marginLeft: 8,
+  },
+  StatisticsButton: {
+    alignItems: "center",
     flex: 1,
+    backgroundColor: colors.white,
+    padding: 10,
+  },
+  RecommendationsButton: {
+    alignItems: "center",
+    flex: 1,
+    backgroundColor: colors.white,
+    padding: 10,
   },
 });
 

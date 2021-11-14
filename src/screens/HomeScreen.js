@@ -20,6 +20,8 @@ import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useFonts } from "expo-font";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
+import HeaderText from "../components/HeaderText";
+import { headerContainer } from "../styles";
 
 const HomeScreen = ({ navigation }) => {
   if (Platform.OS == "ios") {
@@ -31,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
   }
   let [fontsLoaded] = useFonts({
     Bodoni: require("../../assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("../../assets/fonts/Bodoni-bold.ttf"),
+    "Bodoni-bold": require("../../assets/fonts/Bodoni-bold.ttf"),
   });
 
   const greetingOfTheDay = () => {
@@ -56,8 +58,8 @@ const HomeScreen = ({ navigation }) => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <View style={styles.iconTitle}>
-            <Text style={styles.pageTitle}>{greetingOfTheDay()}</Text>
+          <View style={headerContainer}>
+            <HeaderText text={greetingOfTheDay()} />
           </View>
 
           {/* Search */}
@@ -179,13 +181,10 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   header: { height: 177, backgroundColor: colors.theme, padding: 10 },
-  iconTitle: { flexDirection: "row" },
   pageTitle: {
-    fontSize: 30,
-    color: colors.white,
-    justifyContent: "flex-end",
+    // flexDirection: "row",
+    // justifyContent: "flex-stat",
     marginTop: 60,
-    fontFamily: "BodoniBold",
     marginLeft: 10,
   },
   icon: { marginTop: 70, marginHorizontal: 10, color: colors.yellow },
