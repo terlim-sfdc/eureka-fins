@@ -13,13 +13,15 @@ import {
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
-import { DataTable } from "react-native-paper";
+import { DataTable, Surface } from "react-native-paper";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useFonts } from "expo-font";
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { color } from "react-native-reanimated";
+import { LinearGradient } from "expo-linear-gradient";
+
+// Import components and styles
 import HeaderText from "../components/HeaderText";
 import { headerContainer } from "../styles";
 
@@ -79,10 +81,23 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Incentive cards */}
         <View>
-          <Image
+          <LinearGradient
+            colors={[colors.theme, "#3b5998", "#192f6a"]}
             style={styles.incentiveCard}
-            source={require("../../assets/images/incentivecard.png")}
-          />
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Feather
+                name="gift"
+                style={{ fontSize: 20, color: colors.yellow }}
+              />
+              <Text style={styles.incentiveCardTitle}>
+                Incentive for the month of November
+              </Text>
+            </View>
+            <Text style={styles.incentiveCardContent}>
+              With every $5,000 made in sales, get 5% extra bonus commission
+            </Text>
+          </LinearGradient>
         </View>
 
         {/* Dashboard cards */}
@@ -211,11 +226,10 @@ const styles = StyleSheet.create({
   dashboardCardItem: {
     backgroundColor: colors.white,
     padding: 15,
-    marginVertical: 8,
-    marginLeft: 15,
     height: 165,
     width: 165,
     borderRadius: 10,
+    marginHorizontal: 10,
     justifyContent: "space-between",
   },
   dashboardCardHeader: {
@@ -223,21 +237,19 @@ const styles = StyleSheet.create({
     padding: 7,
     flexDirection: "row",
     marginHorizontal: 15,
-    marginTop: 15,
   },
   customerCardName: {
     fontSize: 15,
     alignSelf: "center",
     fontWeight: "bold",
   },
-  incentiveCard: {
-    marginTop: 15,
-    borderWidth: 0,
-    alignSelf: "center",
-  },
+
   dashboardCardItemContainer: {
     flexDirection: "row",
-    padding: 6,
+    padding: 15,
+    width: "90%",
+    justifyContent: "center",
+    alignSelf: "center",
   },
   dashboardCardDetails: {
     fontSize: 33,
@@ -252,13 +264,36 @@ const styles = StyleSheet.create({
   topPerformersTable: {
     backgroundColor: colors.white,
     borderRadius: 10,
-    width: "88%",
+    width: "90%",
     alignSelf: "center",
     marginBottom: 15,
   },
   cellOne: { flex: 1, justifyContent: "center", padding: 10 },
   cellTwo: { flex: 10, justifyContent: "flex-start", padding: 10 },
   cellThree: { flex: 10, justifyContent: "flex-end", padding: 10 },
+  incentiveCard: {
+    borderRadius: 10,
+    padding: 10,
+    width: "90%",
+    alignSelf: "center",
+    marginVertical: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 150,
+  },
+  incentiveCardTitle: {
+    fontSize: 15,
+    padding: 5,
+    color: colors.white,
+  },
+  incentiveCardContent: {
+    fontSize: 20,
+    fontWeight: "bold",
+    alignContent: "center",
+    textAlign: "center",
+    padding: 10,
+    color: colors.white,
+  },
 });
 
 export default HomeScreen;

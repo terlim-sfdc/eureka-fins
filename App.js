@@ -21,9 +21,10 @@ import colors from "./assets/colors/colors";
 
 import HomeScreen from "./src/screens/HomeScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
-import MeScreen from "./src/screens/MeScreen";
+import MeScreen from "./src/screens/Me/MeScreen";
 import TestScreen from "./src/screens/TestScreen";
 import CustomerDetailScreen from "./src/screens/CustomerDetails/CustomerDetailScreen";
+import RecommendedItemsCardsScreen from "./src/screens/CustomerDetails/RecommendedItemsCardsScreen";
 
 import { useFonts } from "expo-font";
 
@@ -124,6 +125,19 @@ const App = () => {
             component={CustomerDetailScreen}
             options={{
               title: "Customer Detail Screen",
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: colors.theme,
+              },
+              headerTitleStyle: { color: "white" },
+              headerTintColor: colors.white,
+            }}
+          />
+          <Stack.Screen
+            name="RecommendedItemsCardsScreen"
+            component={RecommendedItemsCardsScreen}
+            options={{
+              title: "Recommended Items Cards Screen",
               headerShown: false,
               headerStyle: {
                 backgroundColor: colors.theme,

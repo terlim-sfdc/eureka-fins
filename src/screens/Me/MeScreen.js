@@ -21,13 +21,16 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 
 import { useFonts } from "expo-font";
-import Statistics from "./Statistics";
-import Recommendations from "./Recommendations";
+import Monthly from "./Monthly";
+import Weekly from "./Weekly";
+import Yearly from "./Yearly";
+import { headerContainer } from "../../styles";
+import HeaderText from "../../components/HeaderText";
 
 /* Actual Customer Detail Screen */
 
-const CustomerDetailScreen = ({ route, navigation }) => {
-  const { customer } = route.params;
+const MeScreen = ({ route, navigation }) => {
+  //const { customer } = route.params;
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -40,8 +43,8 @@ const CustomerDetailScreen = ({ route, navigation }) => {
     BodoniBold: require("../../../assets/fonts/Bodoni-bold.ttf"),
   });
 
-  const [index, setIndex] = useState(0);
-  const [page, setPage] = useState("recommendations");
+  // page is weekly, monthly, yearly
+  const [page, setPage] = useState("weekly");
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -56,49 +59,27 @@ const CustomerDetailScreen = ({ route, navigation }) => {
       >
         {/* Header */}
         <View style={styles.header}>
-          <View style={styles.iconTitle}>
-            <Ionicons
-              name="chevron-back"
-              size={32}
-              color={colors.white}
-              style={styles.icon}
-              onPress={() => navigation.goBack()}
-              title="Go back"
-            />
-            <Text style={styles.prevPageLink}>Customers</Text>
+          <View style={headerContainer}>
+            <HeaderText text="Sarah Tan" />
           </View>
 
-          <Text style={styles.pageTitle}>{customer.name}</Text>
+          {/* Search */}
+          <View style={styles.search}>
+            <Feather name="search" style={styles.searchIconStyle} />
+            <TextInput
+              placeholder="Search"
+              style={styles.searchInputStyle}
+              autoCapitalize="none"
+              autoCorrect={false}
+              defaultValue={"Search"}
+            />
+          </View>
         </View>
 
         {/* Content Body */}
         <View style={styles.customerDetailBox}>
-          <View style={styles.customerDetailLineItemBox}>
-            <AntDesign
-              name="mobile1"
-              style={styles.customerDetailLineItemIcons}
-            />
-            <Text style={styles.customerDetailLineItemContent}>
-              {customer.phone}
-            </Text>
-          </View>
-          <View style={styles.customerDetailLineItemBox}>
-            <Feather name="mail" style={styles.customerDetailLineItemIcons} />
-            <Text style={styles.customerDetailLineItemContent}>
-              {customer.email}
-            </Text>
-          </View>
-          <View style={styles.customerDetailLineItemBox}>
-            <AntDesign name="home" style={styles.customerDetailLineItemIcons} />
-            <Text
-              style={[
-                styles.customerDetailLineItemContent,
-                { marginBottom: 5 },
-              ]}
-            >
-              {customer.address}
-            </Text>
-          </View>
+          <Text>Content here</Text>
+
           <View
             style={{
               borderBottomColor: "grey",
@@ -107,27 +88,8 @@ const CustomerDetailScreen = ({ route, navigation }) => {
               alignSelf: "center",
             }}
           />
-          <View style={styles.customerDetailLineItemBox}>
-            <AntDesign
-              name="mobile1"
-              style={styles.customerDetailLineItemIcons}
-            />
-            <Text style={styles.customerDetailLineItemContent}>
-              {customer.membership.toUpperCase()} tier member
-            </Text>
-          </View>
-          <View style={styles.customerDetailLineItemBox}>
-            <Feather name="mail" style={styles.customerDetailLineItemIcons} />
-            <Text style={styles.customerDetailLineItemContent}>
-              Member since {customer.joindate}
-            </Text>
-          </View>
-          <View style={styles.customerDetailLineItemBox}>
-            <AntDesign name="home" style={styles.customerDetailLineItemIcons} />
-            <Text style={styles.customerDetailLineItemContent}>
-              Total spending so far: ${customer.totalspent}
-            </Text>
-          </View>
+
+          <Text>Content here</Text>
         </View>
 
         {/* View for Recommendation and Statistics buttons */}
@@ -140,48 +102,76 @@ const CustomerDetailScreen = ({ route, navigation }) => {
         >
           <TouchableOpacity
             style={[
-              page === "recommendations"
+              page === "weekly"
                 ? styles.ActiveTabButton
                 : styles.InActiveTabButton,
             ]}
             onPress={() => {
-              setPage("recommendations");
+              setPage("weekly");
             }}
           >
-            <Text style={styles.RecommendationButtonText}>Recommendations</Text>
+            <Text style={styles.RecommendationButtonText}>Weekly</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[
-              page === "statistics"
+              page === "monthly"
                 ? styles.ActiveTabButton
                 : styles.InActiveTabButton,
             ]}
             onPress={() => {
-              setPage("statistics");
+              setPage("monthly");
             }}
           >
-            <Text style={styles.StatisticsButtonText}>Statistics</Text>
+            <Text style={styles.StatisticsButtonText}>Monthly</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              page === "yearly"
+                ? styles.ActiveTabButton
+                : styles.InActiveTabButton,
+            ]}
+            onPress={() => {
+              setPage("yearly");
+            }}
+          >
+            <Text style={styles.StatisticsButtonText}>Yearly</Text>
           </TouchableOpacity>
         </View>
 
         {/* Show page based on button pressed and pass down customer prop */}
-        {page === "recommendations" && (
-          <Recommendations
-            navigate={navigation.navigate}
-            recommendedItems={customer.recommendedItems}
-          />
-        )}
-        {page === "statistics" && <Statistics customer />}
+        {page === "weekly" && <Weekly />}
+        {page === "monthly" && <Monthly />}
+        {page === "yearly" && <Yearly />}
       </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
   header: {
-    height: 140,
+    height: 177,
     backgroundColor: colors.theme,
     padding: 10,
+  },
+  search: {
+    backgroundColor: "#5d4ba3",
+    borderRadius: 5,
+    flexDirection: "row",
+    marginHorizontal: 10,
+    marginTop: 5,
+  },
+  searchInputStyle: {
+    flex: 1,
+    fontSize: 15,
+    padding: 7,
+    color: colors.white,
+  },
+  searchIconStyle: {
+    fontSize: 20,
+    alignSelf: "center",
+    marginHorizontal: 10,
+    color: colors.white,
   },
   iconTitle: { flexDirection: "row" },
   pageTitle: {
@@ -246,4 +236,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomerDetailScreen;
+export default MeScreen;

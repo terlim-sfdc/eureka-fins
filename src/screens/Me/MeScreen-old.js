@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import AppLoading from "expo-app-loading";
-import colors from "../../assets/colors/colors";
+import colors from "../../../assets/colors/colors";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
@@ -25,8 +25,8 @@ const MeScreen = ({ navigation }) => {
     /* load custom fonts */
   }
   let [fontsLoaded] = useFonts({
-    Bodoni: require("../../assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("../../assets/fonts/Bodoni-bold.ttf"),
+    Bodoni: require("../../../assets/fonts/Bodoni.ttf"),
+    BodoniBold: require("../../../assets/fonts/Bodoni-bold.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -56,10 +56,7 @@ const MeScreen = ({ navigation }) => {
 
         {/* Content Body */}
         <Text>Customer Content goes here</Text>
-        <Button
-          onPress={() => navigation.navigate("TestScreen")}
-          title="Go to Swipe Cards"
-        />
+        <Button title="Go to Swipe Cards" />
       </ScrollView>
     );
 };
