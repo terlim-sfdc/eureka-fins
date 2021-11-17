@@ -99,6 +99,8 @@ const CustomerDetailScreen = ({ route, navigation }) => {
               {customer.address}
             </Text>
           </View>
+
+          {/* {Line seperator} */}
           <View
             style={{
               borderBottomColor: "grey",
@@ -148,7 +150,7 @@ const CustomerDetailScreen = ({ route, navigation }) => {
               setPage("recommendations");
             }}
           >
-            <Text style={styles.RecommendationButtonText}>Recommendations</Text>
+            <Text style={styles.TabButtonText}>Recommendations</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -161,16 +163,13 @@ const CustomerDetailScreen = ({ route, navigation }) => {
               setPage("statistics");
             }}
           >
-            <Text style={styles.StatisticsButtonText}>Statistics</Text>
+            <Text style={styles.TabButtonText}>Statistics</Text>
           </TouchableOpacity>
         </View>
 
         {/* Show page based on button pressed and pass down customer prop */}
         {page === "recommendations" && (
-          <Recommendations
-            navigate={navigation.navigate}
-            recommendedItems={customer.recommendedItems}
-          />
+          <Recommendations navigate={navigation.navigate} customer={customer} />
         )}
         {page === "statistics" && <Statistics customer />}
       </ScrollView>
@@ -209,24 +208,19 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   customerDetailLineItemIcons: {
+    marginTop: 3,
     marginHorizontal: 15,
     color: colors.theme,
   },
   customerDetailLineItemContent: { fontSize: 15 },
-  RecommendationButtonText: {
+  TabButtonText: {
     fontSize: 15,
     color: colors.theme,
     fontFamily: "BodoniBold",
     alignContent: "space-between",
     marginLeft: 8,
   },
-  StatisticsButtonText: {
-    fontSize: 15,
-    color: colors.theme,
-    fontFamily: "BodoniBold",
-    alignContent: "space-between",
-    marginLeft: 8,
-  },
+
   ActiveTabButton: {
     alignItems: "center",
     flex: 1,

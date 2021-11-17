@@ -23,16 +23,6 @@ const Statistics = (props) => {
         style={{ alignSelf: "center" }}
       />
 
-      <TouchableOpacity>
-        <Surface
-          style={[styles.infoCards, { elevation: 4, marginVertical: 20 }]}
-        >
-          <Text style={{ fontWeight: "bold" }}>
-            Reserve & Locate Products for Customer
-          </Text>
-        </Surface>
-      </TouchableOpacity>
-
       <View style={styles.subtitleContainer}>
         <Text style={{ fontWeight: "bold", fontSize: 15 }}>
           Spending Trend by Month

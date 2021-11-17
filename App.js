@@ -16,13 +16,14 @@ import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { Feather, FontAwesome } from "@expo/vector-icons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 import colors from "./assets/colors/colors";
 
 import HomeScreen from "./src/screens/HomeScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
 import MeScreen from "./src/screens/Me/MeScreen";
-import TestScreen from "./src/screens/TestScreen";
+import LocateItemScreen from "./src/screens/LocateItemScreen";
 import CustomerDetailScreen from "./src/screens/CustomerDetails/CustomerDetailScreen";
 import RecommendedItemsCardsScreen from "./src/screens/CustomerDetails/RecommendedItemsCardsScreen";
 
@@ -151,16 +152,21 @@ const App = () => {
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen
-            name="TestScreen"
-            component={TestScreen}
+            name="LocateItemScreen"
+            component={LocateItemScreen}
             options={{
-              title: "Test Screen",
-              headerShown: false,
+              title: "Locate Item",
+              headerShown: true,
               headerStyle: {
                 backgroundColor: colors.theme,
               },
               headerTitleStyle: { color: "white" },
               headerTintColor: colors.white,
+              headerBackTitleVisible: false,
+              cardStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerLeft: () => <View></View>,
             }}
           />
         </Stack.Group>

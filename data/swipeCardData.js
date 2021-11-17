@@ -2,17 +2,17 @@ const swipeCardData = [
   {
     id: 1,
     title: "Chain Strap Heeled Sandals",
-    source: require("../assets/images/swipecards/001.png"),
+    source: require("../assets/images/swipecards/ChainStrapHeeledSandalsBlack.png"),
   },
   {
     id: 2,
     title: "Snap Button Mini Short Wallet",
-    source: require("../assets/images/swipecards/002.png"),
+    source: require("../assets/images/swipecards/SnapButtonMiniShortWallet.png"),
   },
   {
     id: 3,
     title: "Metallic Accent Mile Flat",
-    source: require("../assets/images/swipecards/003.png"),
+    source: require("../assets/images/swipecards/MetallicAccentMileFlatsBlack.png"),
   },
 ];
 

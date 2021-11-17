@@ -13,6 +13,7 @@ import { Surface, useTheme } from "react-native-paper";
 import colors from "../../../assets/colors/colors";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
+// props contain customer
 const Recommendations = (props) => {
   return (
     <View style={styles.container}>
@@ -26,7 +27,7 @@ const Recommendations = (props) => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={props.recommendedItems}
+          data={props.customer.recommendedItems}
           keyExtractor={(recommendedItem) => recommendedItem.id}
           renderItem={(recommendedItem) => {
             return (
@@ -34,6 +35,7 @@ const Recommendations = (props) => {
                 onPress={() =>
                   props.navigate("RecommendedItemsCardsScreen", {
                     itemClicked: recommendedItem.item.id,
+                    customerName: props.customer.name,
                   })
                 }
               >
@@ -54,7 +56,11 @@ const Recommendations = (props) => {
         />
       </View>
       <TouchableOpacity
-        onPress={() => props.navigate("RecommendedItemsCardsScreen")}
+        onPress={() =>
+          props.navigate("RecommendedItemsCardsScreen", {
+            customerName: props.customer.name,
+          })
+        }
       >
         <Surface
           style={[styles.infoCards, { elevation: 4, marginVertical: 20 }]}
