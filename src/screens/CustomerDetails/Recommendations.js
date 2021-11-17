@@ -31,7 +31,11 @@ const Recommendations = (props) => {
           renderItem={(recommendedItem) => {
             return (
               <TouchableOpacity
-                onPress={() => props.navigate("RecommendedItemsCardsScreen")}
+                onPress={() =>
+                  props.navigate("RecommendedItemsCardsScreen", {
+                    itemClicked: recommendedItem.item.id,
+                  })
+                }
               >
                 <View style={styles.recommendedItemsView}>
                   <Image source={recommendedItem.item.source} />
@@ -49,12 +53,14 @@ const Recommendations = (props) => {
           }}
         />
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => props.navigate("RecommendedItemsCardsScreen")}
+      >
         <Surface
           style={[styles.infoCards, { elevation: 4, marginVertical: 20 }]}
         >
           <Text style={{ fontWeight: "bold" }}>
-            Reserve & Location Products for Customer
+            Reserve & Locate Products for Customer
           </Text>
         </Surface>
       </TouchableOpacity>
@@ -98,6 +104,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     height: "100%",
+    marginBottom: 50,
   },
   subtitleContainer: {
     marginHorizontal: 15,

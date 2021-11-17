@@ -29,7 +29,12 @@ const CustomersScreen = ({ navigation }) => {
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
-
+  // define the image path for membership tier
+  const membershipImage = {
+    gold: require("../../assets/images/gold.png"),
+    silver: require("../../assets/images/silver.png"),
+    bronze: require("../../assets/images/bronze.png"),
+  };
   return (
     // Overall Container Wrapper
     <ScrollView
@@ -58,7 +63,6 @@ const CustomersScreen = ({ navigation }) => {
 
       {/* Content Body */}
       <Pressable
-        onPress={() => navigation.navigate("TestScreen")}
         title="Go to Test Screen here"
         style={styles.addCustomerButton}
       >
@@ -99,9 +103,29 @@ const CustomersScreen = ({ navigation }) => {
                 <Text style={styles.customerCardMemberSince}>
                   Member Since {customer.item.joindate}
                 </Text>
-                <Text style={styles.customerCardMembershipTier}>
-                  {customer.item.membership}
-                </Text>
+                <View style={styles.customerMembershipBox}>
+                  {customer.item.membership === "gold" && (
+                    <Image
+                      source={membershipImage.gold}
+                      style={styles.customerCardMembershipTierImage}
+                    />
+                  )}
+                  {customer.item.membership === "silver" && (
+                    <Image
+                      source={membershipImage.silver}
+                      style={styles.customerCardMembershipTierImage}
+                    />
+                  )}
+                  {customer.item.membership === "bronze" && (
+                    <Image
+                      source={membershipImage.bronze}
+                      style={styles.customerCardMembershipTierImage}
+                    />
+                  )}
+                  <Text style={styles.customerCardMembershipTier}>
+                    {customer.item.membership}
+                  </Text>
+                </View>
               </View>
             </TouchableOpacity>
           );
@@ -195,10 +219,20 @@ const styles = StyleSheet.create({
   customerCardEmail: { fontSize: 15 },
   customerCardMemberSince: { fontSize: 15 },
   customerCardMembershipTier: {
-    position: "absolute",
-    right: 20,
-    top: 65,
     textTransform: "uppercase",
+    padding: 5,
+  },
+  customerCardMembershipTierImage: {
+    width: 25,
+    height: 35,
+    padding: 5,
+  },
+  customerMembershipBox: {
+    position: "absolute",
+    right: 10,
+    top: 55,
+    flexDirection: "row",
+    alignItems: "center",
   },
   trendingNowTitleView: {
     justifyContent: "space-between",

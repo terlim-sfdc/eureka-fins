@@ -10,6 +10,7 @@ import {
   Pressable,
   FlatList,
   Image,
+  Dimensions,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
@@ -226,8 +227,8 @@ const styles = StyleSheet.create({
   dashboardCardItem: {
     backgroundColor: colors.white,
     padding: 15,
-    height: 165,
-    width: 165,
+    height: (Dimensions.get("window").width / 2) * 0.85,
+    width: (Dimensions.get("window").width / 2) * 0.85,
     borderRadius: 10,
     marginHorizontal: 10,
     justifyContent: "space-between",

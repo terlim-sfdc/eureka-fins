@@ -135,6 +135,8 @@ const App = () => {
           />
           <Stack.Screen
             name="RecommendedItemsCardsScreen"
+            // Default card shows first item
+            initialParams={{ itemClicked: 1 }}
             component={RecommendedItemsCardsScreen}
             options={{
               title: "Recommended Items Cards Screen",

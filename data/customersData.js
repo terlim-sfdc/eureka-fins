@@ -66,7 +66,7 @@ const customersData = [
     email: "jisoo@gmail.com",
     address: "11 Leonie Hill #12-03, Singapore 239488",
     joindate: "11 Jan 2010",
-    membership: "silver",
+    membership: "bronze",
     totalspent: "853.50",
     recommendedItems: [
       {

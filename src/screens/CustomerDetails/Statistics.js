@@ -28,7 +28,7 @@ const Statistics = (props) => {
           style={[styles.infoCards, { elevation: 4, marginVertical: 20 }]}
         >
           <Text style={{ fontWeight: "bold" }}>
-            Reserve & Location Products for Customer
+            Reserve & Locate Products for Customer
           </Text>
         </Surface>
       </TouchableOpacity>

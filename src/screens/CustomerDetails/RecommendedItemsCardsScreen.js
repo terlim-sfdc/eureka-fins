@@ -13,9 +13,13 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import colors from "../../../assets/colors/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const RecommendedItemsCardsScreen = (props) => {
+const RecommendedItemsCardsScreen = ({ route, navigation }) => {
+  // Check which item was clicked, and show that item first.
+  // Note that activeSlide indexes from 0, while itemClicked indexes from 1
+  const { itemClicked } = route.params;
+
   // activeSlide state
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(itemClicked - 1);
 
   const SLIDER_WIDTH = Dimensions.get("window").width;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -34,7 +38,6 @@ const RecommendedItemsCardsScreen = (props) => {
       <Pagination
         dotsLength={swipeCardData.length}
         activeDotIndex={activeSlide}
-        containerStyle={{ backgroundColor: colors.grey }}
         dotStyle={{
           width: 10,
           height: 10,
@@ -49,6 +52,7 @@ const RecommendedItemsCardsScreen = (props) => {
         }
         inactiveDotOpacity={0.5}
         inactiveDotScale={0.6}
+        firstItem={itemClicked - 1}
       />
     );
   };
@@ -63,7 +67,7 @@ const RecommendedItemsCardsScreen = (props) => {
             size={32}
             color={colors.white}
             style={styles.icon}
-            onPress={() => props.navigation.goBack()}
+            onPress={() => navigation.goBack()}
             title="Go back"
           />
           <Text style={styles.prevPageLink}>Customer Details</Text>
@@ -84,6 +88,7 @@ const RecommendedItemsCardsScreen = (props) => {
           itemWidth={ITEM_WIDTH}
           layout={"stack"}
           layoutCardOffset={20}
+          firstItem={itemClicked - 1}
           onSnapToItem={(index) => setActiveSlide(index)}
         />
       </View>
