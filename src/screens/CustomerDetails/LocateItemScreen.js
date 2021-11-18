@@ -9,7 +9,7 @@ import {
   Button,
 } from "react-native";
 
-import colors from "../../assets/colors/colors";
+import colors from "../../../assets/colors/colors";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
@@ -30,7 +30,7 @@ const LocateItemScreen = (props) => {
         />
       </View>
       <Image
-        source={require("../../assets/images/store-map.png")}
+        source={require("../../../assets/images/store-map.png")}
         style={styles.storeMapImage}
       />
       <MaterialIcons name="my-location" style={styles.locationIcon} />

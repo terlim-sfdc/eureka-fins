@@ -13,12 +13,28 @@ import { Surface, useTheme } from "react-native-paper";
 import colors from "../../../assets/colors/colors";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
+// import styles and components
+import {
+  container,
+  headerContainer,
+  headerWithoutSearch,
+  prevPageLinkContentBox,
+  sectionSubHeadingBox,
+  sectionSubHeadingText,
+  subTabText,
+  activeSubTabButton,
+  inactiveSubTabButton,
+  prevPageLink,
+  subTabScreenContainer,
+  surfaceInfoCards,
+} from "../../styles";
+
 // props contain customer
 const Recommendations = (props) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.subtitleContainer}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+    <View style={subTabScreenContainer}>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>
           Products recommended for customer
         </Text>
       </View>
@@ -71,13 +87,11 @@ const Recommendations = (props) => {
         </Surface>
       </TouchableOpacity>
 
-      <View style={styles.subtitleContainer}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-          Good to let customer know
-        </Text>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Good to let customer know</Text>
       </View>
 
-      <Surface style={[styles.infoCards, { elevation: 1 }]}>
+      <Surface style={[surfaceInfoCards, { flexDirection: "row" }]}>
         <FontAwesome5 name="percentage" style={styles.infoCardIcons} />
         <Text style={{ flex: 7 }}>
           20% off selected kids wear for 2 kids, 10 % off selected men's wear
@@ -85,7 +99,7 @@ const Recommendations = (props) => {
         <FontAwesome5 name="info-circle" style={[styles.infoCardIcons]} />
       </Surface>
 
-      <Surface style={[styles.infoCards, { elevation: 1 }]}>
+      <Surface style={[surfaceInfoCards, { flexDirection: "row" }]}>
         <FontAwesome5 name="gift" style={styles.infoCardIcons} />
         <Text style={{ flex: 7 }}>
           Upload a photo of your purchase using the #gotbags hashtag to receive
@@ -94,7 +108,7 @@ const Recommendations = (props) => {
         <FontAwesome5 name="info-circle" style={styles.infoCardIcons} />
       </Surface>
 
-      <Surface style={[styles.infoCards, { elevation: 1 }]}>
+      <Surface style={[surfaceInfoCards, { flexDirection: "row" }]}>
         <FontAwesome5 name="percentage" style={styles.infoCardIcons} />
 
         <Text style={{ flex: 7 }}>
@@ -107,15 +121,6 @@ const Recommendations = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.white,
-    height: "100%",
-    marginBottom: 50,
-  },
-  subtitleContainer: {
-    marginHorizontal: 15,
-    marginTop: 15,
-  },
   recommendedItemsView: {
     width: 155,
     marginHorizontal: 7,

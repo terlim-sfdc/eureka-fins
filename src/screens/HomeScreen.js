@@ -1,32 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   StatusBar,
-  TextInput,
   ScrollView,
-  Pressable,
-  FlatList,
-  Image,
   Dimensions,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
-import { DataTable, Surface } from "react-native-paper";
+import { DataTable } from "react-native-paper";
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import Feather from "react-native-vector-icons/Feather";
 import { useFonts } from "expo-font";
-import { Feather, FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
 // Import components and styles
 import HeaderText from "../components/HeaderText";
-import { headerContainer } from "../styles";
+import {
+  container,
+  headerWithSearch,
+  headerContainer,
+  sectionSubHeadingBox,
+  sectionSubHeadingText,
+} from "../styles";
+import SearchBar from "../components/SearchBar";
 
 const HomeScreen = ({ navigation }) => {
+  /* Set up state for search term */
+  const [term, setTerm] = useState("");
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -54,28 +57,20 @@ const HomeScreen = ({ navigation }) => {
   } else
     return (
       // Overall Container Wrapper
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        bounces={false}
-        style={styles.container}
-      >
+      <ScrollView stickyHeaderIndices={[0]} bounces={false} style={container}>
         {/* Header */}
-        <View style={styles.header}>
+        <View style={headerWithSearch}>
           <View style={headerContainer}>
             <HeaderText text={greetingOfTheDay()} />
           </View>
 
           {/* Search */}
-          <View style={styles.search}>
-            <Feather name="search" style={styles.searchIconStyle} />
-            <TextInput
-              placeholder="Search"
-              style={styles.searchInputStyle}
-              autoCapitalize="none"
-              autoCorrect={false}
-              defaultValue={"Search"}
-            />
-          </View>
+          <SearchBar
+            term={term}
+            onTermChange={(newTerm) => {
+              setTerm(newTerm);
+            }}
+          />
         </View>
 
         {/* Content Body */}
@@ -102,14 +97,14 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* Dashboard cards */}
-        <View style={styles.dashboardCardHeader}>
-          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+        <View style={sectionSubHeadingBox}>
+          <Text style={sectionSubHeadingText}>
             Team Dashboard - This month so far
           </Text>
         </View>
         <View style={styles.dashboardCardItemContainer}>
           <View style={styles.dashboardCardItem}>
-            <Text style={styles.customerCardName}>Total Sales Made</Text>
+            <Text style={styles.dashboardCardTitle}>Total Sales Made</Text>
             <View
               style={{
                 borderBottomColor: colors.yellow,
@@ -134,7 +129,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.dashboardCardItem}>
-            <Text style={styles.customerCardName}>Target Percentage</Text>
+            <Text style={styles.dashboardCardTitle}>Target Percentage</Text>
             <View
               style={{
                 borderBottomColor: colors.yellow,
@@ -158,7 +153,14 @@ const HomeScreen = ({ navigation }) => {
         {/* https://callstack.github.io/react-native-paper/data-table.html */}
         <DataTable style={styles.topPerformersTable}>
           <DataTable.Header>
-            <DataTable.Title style={{ flex: 1, justifyContent: "center" }}>
+            <DataTable.Title
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                borderBottomColor: colors.yellow,
+                borderBottomWidth: 3,
+              }}
+            >
               <Text
                 style={{
                   fontSize: 15,
@@ -173,21 +175,45 @@ const HomeScreen = ({ navigation }) => {
           </DataTable.Header>
 
           <DataTable.Row>
-            <DataTable.Cell style={styles.cellOne}>1.</DataTable.Cell>
-            <DataTable.Cell style={styles.cellTwo}>Li Xinyi</DataTable.Cell>
-            <DataTable.Cell style={styles.cellThree}>$3,430.70</DataTable.Cell>
+            <DataTable.Cell style={styles.columnOne}>1.</DataTable.Cell>
+            <DataTable.Cell style={styles.columnTwo}>Li Xinyi</DataTable.Cell>
+            <DataTable.Cell style={styles.columnThree}>
+              $3,430.70
+            </DataTable.Cell>
+          </DataTable.Row>
+
+          <DataTable.Row style={{ backgroundColor: "#CBC3E3" }}>
+            <DataTable.Cell style={styles.columnOne}>2.</DataTable.Cell>
+            <DataTable.Cell style={styles.columnTwo}>Sarah Tan</DataTable.Cell>
+            <DataTable.Cell style={styles.columnThree}>
+              $3,308.10
+            </DataTable.Cell>
           </DataTable.Row>
 
           <DataTable.Row>
-            <DataTable.Cell style={styles.cellOne}>2.</DataTable.Cell>
-            <DataTable.Cell style={styles.cellTwo}>Sarah Tan</DataTable.Cell>
-            <DataTable.Cell style={styles.cellThree}>$3,308.10</DataTable.Cell>
+            <DataTable.Cell style={styles.columnOne}>3.</DataTable.Cell>
+            <DataTable.Cell style={styles.columnTwo}>Sam Man</DataTable.Cell>
+            <DataTable.Cell style={styles.columnThree}>
+              $2,908.10
+            </DataTable.Cell>
           </DataTable.Row>
 
           <DataTable.Row>
-            <DataTable.Cell style={styles.cellOne}>3.</DataTable.Cell>
-            <DataTable.Cell style={styles.cellTwo}>Sam Man</DataTable.Cell>
-            <DataTable.Cell style={styles.cellThree}>$308.10</DataTable.Cell>
+            <DataTable.Cell style={styles.columnOne}>4.</DataTable.Cell>
+            <DataTable.Cell style={styles.columnTwo}>Ji Soo Kim</DataTable.Cell>
+            <DataTable.Cell style={styles.columnThree}>
+              $2,108.10
+            </DataTable.Cell>
+          </DataTable.Row>
+
+          <DataTable.Row>
+            <DataTable.Cell style={styles.columnOne}>5.</DataTable.Cell>
+            <DataTable.Cell style={styles.columnTwo}>
+              Tan Kah Kee
+            </DataTable.Cell>
+            <DataTable.Cell style={styles.columnThree}>
+              $2,008.10
+            </DataTable.Cell>
           </DataTable.Row>
         </DataTable>
       </ScrollView>
@@ -195,8 +221,7 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  header: { height: 177, backgroundColor: colors.theme, padding: 10 },
+  container: {},
   pageTitle: {
     // flexDirection: "row",
     // justifyContent: "flex-stat",
@@ -204,26 +229,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   icon: { marginTop: 70, marginHorizontal: 10, color: colors.yellow },
-  search: {
-    backgroundColor: "#5d4ba3",
-    borderRadius: 5,
-    marginHorizontal: 15,
-    flexDirection: "row",
-    marginHorizontal: 10,
-    marginTop: 5,
-  },
-  searchInputStyle: {
-    flex: 1,
-    fontSize: 15,
-    padding: 7,
-    color: colors.white,
-  },
-  searchIconStyle: {
-    fontSize: 20,
-    alignSelf: "center",
-    marginHorizontal: 15,
-    color: colors.white,
-  },
+
   dashboardCardItem: {
     backgroundColor: colors.white,
     padding: 15,
@@ -233,13 +239,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     justifyContent: "space-between",
   },
-  dashboardCardHeader: {
-    justifyContent: "space-between",
-    padding: 7,
-    flexDirection: "row",
-    marginHorizontal: 15,
-  },
-  customerCardName: {
+
+  dashboardCardTitle: {
     fontSize: 15,
     alignSelf: "center",
     fontWeight: "bold",
@@ -269,15 +270,15 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 15,
   },
-  cellOne: { flex: 1, justifyContent: "center", padding: 10 },
-  cellTwo: { flex: 10, justifyContent: "flex-start", padding: 10 },
-  cellThree: { flex: 10, justifyContent: "flex-end", padding: 10 },
+  columnOne: { flex: 1, justifyContent: "center", padding: 10 },
+  columnTwo: { flex: 10, justifyContent: "flex-start", padding: 10 },
+  columnThree: { flex: 10, justifyContent: "flex-end", padding: 10 },
   incentiveCard: {
     borderRadius: 10,
     padding: 10,
     width: "90%",
     alignSelf: "center",
-    marginVertical: 10,
+    marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
     height: 150,

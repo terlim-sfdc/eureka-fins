@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,21 +11,27 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import AppLoading from "expo-app-loading";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/colors/colors";
-
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import Feather from "react-native-vector-icons/Feather";
-import { useFonts } from "expo-font";
 
 import customersData from "../../data/customersData";
 import trendingNowData from "../../data/trendingNowData";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
+// Import components and styles
 import HeaderText from "../components/HeaderText";
-import { headerContainer } from "../styles";
+import SearchBar from "../components/SearchBar";
+import {
+  container,
+  headerWithSearch,
+  headerContainer,
+  sectionSubHeadingBox,
+  sectionSubHeadingText,
+} from "../styles";
 
 const CustomersScreen = ({ navigation }) => {
+  /* Set up state for search term */
+  const [term, setTerm] = useState("");
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -37,43 +43,35 @@ const CustomersScreen = ({ navigation }) => {
   };
   return (
     // Overall Container Wrapper
-    <ScrollView
-      stickyHeaderIndices={[0]}
-      bounces={false}
-      style={styles.container}
-    >
+    <ScrollView stickyHeaderIndices={[0]} bounces={false} style={container}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={headerWithSearch}>
         <View style={headerContainer}>
           <HeaderText text="Customers" />
         </View>
 
         {/* Search */}
-        <View style={styles.search}>
-          <Feather name="search" style={styles.searchIconStyle} />
-          <TextInput
-            placeholder="Search"
-            style={styles.searchInputStyle}
-            autoCapitalize="none"
-            autoCorrect={false}
-            defaultValue={"Search for customer information, insights"}
-          />
-        </View>
+        <SearchBar
+          term={term}
+          onTermChange={(newTerm) => {
+            setTerm(newTerm);
+          }}
+        />
       </View>
 
       {/* Content Body */}
-      <Pressable
+      <TouchableOpacity
         title="Go to Test Screen here"
         style={styles.addCustomerButton}
       >
         <Text style={styles.addCustomerButtonText}>
           + &nbsp;&nbsp;Add new customer
         </Text>
-      </Pressable>
+      </TouchableOpacity>
 
       {/* Customer Cards */}
-      <View style={styles.customerCardTitle}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>Your Customers</Text>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Your Customers</Text>
         <Text>SEE ALL</Text>
       </View>
       <FlatList
@@ -133,8 +131,8 @@ const CustomersScreen = ({ navigation }) => {
       />
 
       {/* Trending Now Cards */}
-      <View style={styles.trendingNowTitleView}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>Trending Now</Text>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Trending Now</Text>
         <Text>SEE ALL</Text>
       </View>
 
@@ -158,28 +156,6 @@ const CustomersScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  header: { height: 177, backgroundColor: colors.theme, padding: 10 },
-  icon: { marginTop: 70, marginHorizontal: 10, color: colors.yellow },
-  search: {
-    backgroundColor: "#5d4ba3",
-    borderRadius: 5,
-    flexDirection: "row",
-    marginHorizontal: 10,
-    marginTop: 5,
-  },
-  searchInputStyle: {
-    flex: 1,
-    fontSize: 15,
-    padding: 7,
-    color: colors.white,
-  },
-  searchIconStyle: {
-    fontSize: 20,
-    alignSelf: "center",
-    marginHorizontal: 10,
-    color: colors.white,
-  },
   addCustomerButton: {
     alignItems: "flex-start",
     justifyContent: "center",
@@ -207,13 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "space-between",
   },
-  customerCardTitle: {
-    justifyContent: "space-between",
-    padding: 10,
-    flexDirection: "row",
-    marginHorizontal: 7,
-    marginTop: 7,
-  },
+
   customerCardName: { fontSize: 25, fontWeight: "bold" },
   customerCardPhone: { fontSize: 15, fontWeight: "bold" },
   customerCardEmail: { fontSize: 15 },
@@ -234,12 +204,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  trendingNowTitleView: {
-    justifyContent: "space-between",
-    padding: 10,
-    flexDirection: "row",
-    marginHorizontal: 7,
-  },
+
   trendingNowItemsView: {
     justifyContent: "space-between",
     padding: 5,

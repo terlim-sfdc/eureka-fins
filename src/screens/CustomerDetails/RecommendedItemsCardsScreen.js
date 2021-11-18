@@ -8,13 +8,26 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { withNavigation } from "react-navigation";
 import swipeCardData from "../../../data/swipeCardData";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import colors from "../../../assets/colors/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import customersData from "../../../data/customersData";
 import { Surface, useTheme } from "react-native-paper";
+
+// import styles and components
+import {
+  container,
+  headerContainer,
+  headerWithoutSearch,
+  prevPageLinkContentBox,
+  sectionSubHeadingBox,
+  sectionSubHeadingText,
+  subTabText,
+  activeSubTabButton,
+  inactiveSubTabButton,
+  prevPageLink,
+} from "../../styles";
+import HeaderText from "../../components/HeaderText";
 
 const RecommendedItemsCardsScreen = ({ route, navigation }) => {
   // Check which item was clicked, and show that item first.
@@ -76,25 +89,29 @@ const RecommendedItemsCardsScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View>
+    <ScrollView
+      style={container}
+      showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[0]}
+      bounces={false}
+    >
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.iconTitle}>
+      <View style={headerWithoutSearch}>
+        <View style={prevPageLinkContentBox}>
           <Ionicons
             name="chevron-back"
             size={32}
             color={colors.white}
-            style={styles.backIcon}
-            onPress={() => navigation.goBack()}
             title="Go back"
+            onPress={() => navigation.goBack()}
           />
-          <Text style={styles.prevPageLink} onPress={() => navigation.goBack()}>
-            {customerName}
-          </Text>
+          <Text style={prevPageLink}>{customerName}</Text>
         </View>
-
-        <Text style={styles.pageTitle}>Recommended</Text>
+        <View style={headerContainer}>
+          <HeaderText text={"Recommended"} />
+        </View>
       </View>
+
       {pagination()}
       <View style={styles.carouselView}>
         <Carousel
@@ -145,7 +162,7 @@ const RecommendedItemsCardsScreen = ({ route, navigation }) => {
           <Text style={{ padding: 15 }}>Reserve for customer</Text>
         </Surface>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -155,8 +172,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    width: 300,
-    height: 450,
+    width: Dimensions.get("window").width * 0.75,
+    height: Dimensions.get("window").height * 0.53,
     backgroundColor: colors.white,
     borderRadius: 30,
     padding: 0,

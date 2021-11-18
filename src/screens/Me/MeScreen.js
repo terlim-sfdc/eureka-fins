@@ -3,34 +3,41 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   StatusBar,
-  TextInput,
   ScrollView,
   Dimensions,
-  useWindowDimensions,
   TouchableOpacity,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../../assets/colors/colors";
-import { TabView, SceneMap } from "react-native-tab-view";
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Feather from "react-native-vector-icons/Feather";
 
 import { useFonts } from "expo-font";
 import Monthly from "./Monthly";
 import Weekly from "./Weekly";
 import Yearly from "./Yearly";
-import { headerContainer } from "../../styles";
+
+// Import components and styles
+import {
+  container,
+  headerWithSearch,
+  headerContainer,
+  sectionSubHeadingBox,
+  sectionSubHeadingText,
+  subTabText,
+  activeSubTabButton,
+  inactiveSubTabButton,
+} from "../../styles";
 import HeaderText from "../../components/HeaderText";
+import SearchBar from "../../components/SearchBar";
 
 /* Actual Customer Detail Screen */
 
 const MeScreen = ({ route, navigation }) => {
-  //const { customer } = route.params;
+  /* Set up state for search term */
+  const [term, setTerm] = useState("");
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -52,44 +59,71 @@ const MeScreen = ({ route, navigation }) => {
     return (
       // Overall Container Wrapper
       <ScrollView
-        style={styles.container}
+        style={container}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0]}
         bounces={false}
       >
         {/* Header */}
-        <View style={styles.header}>
+        <View style={headerWithSearch}>
           <View style={headerContainer}>
             <HeaderText text="Sarah Tan" />
           </View>
 
           {/* Search */}
-          <View style={styles.search}>
-            <Feather name="search" style={styles.searchIconStyle} />
-            <TextInput
-              placeholder="Search"
-              style={styles.searchInputStyle}
-              autoCapitalize="none"
-              autoCorrect={false}
-              defaultValue={"Search"}
-            />
-          </View>
+          <SearchBar
+            term={term}
+            onTermChange={(newTerm) => {
+              setTerm(newTerm);
+            }}
+          />
         </View>
 
         {/* Content Body */}
-        <View style={styles.customerDetailBox}>
-          <Text>Content here</Text>
+        <View style={styles.agentSummaryOverallBox}>
+          <View style={styles.agentSummaryBoxRow}>
+            <View>
+              <View style={styles.agentSummaryBoxTitleBox}>
+                <Text style={styles.agentSummaryBoxTitle}>Team & Slack</Text>
+                <AntDesign name="infocirlceo" style={styles.infoIcon} />
+              </View>
+              <Text style={styles.agentSummaryBoxContent}>Orchard Ion</Text>
+            </View>
+            <View style={styles.verticleLine}></View>
+            <View>
+              <View style={styles.agentSummaryBoxTitleBox}>
+                <Text style={styles.agentSummaryBoxTitle}>
+                  Service Duration
+                </Text>
+                <AntDesign name="infocirlceo" style={styles.infoIcon} />
+              </View>
+              <Text style={styles.agentSummaryBoxContent}>
+                3 years, 8 months
+              </Text>
+            </View>
+          </View>
 
-          <View
-            style={{
-              borderBottomColor: "grey",
-              borderBottomWidth: 1,
-              width: "92%",
-              alignSelf: "center",
-            }}
-          />
+          <View style={styles.horizontalLine} />
 
-          <Text>Content here</Text>
+          <View style={styles.agentSummaryBoxRow}>
+            <View>
+              <View style={styles.agentSummaryBoxTitleBox}>
+                <Text style={styles.agentSummaryBoxTitle}>
+                  Customers Served
+                </Text>
+                <AntDesign name="infocirlceo" style={styles.infoIcon} />
+              </View>
+              <Text style={styles.agentSummaryBoxContent}>4,239</Text>
+            </View>
+            <View style={styles.verticleLine}></View>
+            <View>
+              <View style={styles.agentSummaryBoxTitleBox}>
+                <Text style={styles.agentSummaryBoxTitle}>Total Sales</Text>
+                <AntDesign name="infocirlceo" style={styles.infoIcon} />
+              </View>
+              <Text style={styles.agentSummaryBoxContent}>S$ 58,384</Text>
+            </View>
+          </View>
         </View>
 
         {/* View for Recommendation and Statistics buttons */}
@@ -102,41 +136,35 @@ const MeScreen = ({ route, navigation }) => {
         >
           <TouchableOpacity
             style={[
-              page === "weekly"
-                ? styles.ActiveTabButton
-                : styles.InActiveTabButton,
+              page === "weekly" ? activeSubTabButton : inactiveSubTabButton,
             ]}
             onPress={() => {
               setPage("weekly");
             }}
           >
-            <Text style={styles.RecommendationButtonText}>Weekly</Text>
+            <Text style={subTabText}>Weekly</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[
-              page === "monthly"
-                ? styles.ActiveTabButton
-                : styles.InActiveTabButton,
+              page === "monthly" ? activeSubTabButton : inactiveSubTabButton,
             ]}
             onPress={() => {
               setPage("monthly");
             }}
           >
-            <Text style={styles.StatisticsButtonText}>Monthly</Text>
+            <Text style={subTabText}>Monthly</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[
-              page === "yearly"
-                ? styles.ActiveTabButton
-                : styles.InActiveTabButton,
+              page === "yearly" ? activeSubTabButton : inactiveSubTabButton,
             ]}
             onPress={() => {
               setPage("yearly");
             }}
           >
-            <Text style={styles.StatisticsButtonText}>Yearly</Text>
+            <Text style={subTabText}>Yearly</Text>
           </TouchableOpacity>
         </View>
 
@@ -149,90 +177,49 @@ const MeScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    height: 177,
-    backgroundColor: colors.theme,
-    padding: 10,
-  },
-  search: {
-    backgroundColor: "#5d4ba3",
-    borderRadius: 5,
-    flexDirection: "row",
-    marginHorizontal: 10,
-    marginTop: 5,
-  },
-  searchInputStyle: {
-    flex: 1,
-    fontSize: 15,
-    padding: 7,
-    color: colors.white,
-  },
-  searchIconStyle: {
-    fontSize: 20,
-    alignSelf: "center",
-    marginHorizontal: 10,
-    color: colors.white,
-  },
-  iconTitle: { flexDirection: "row" },
-  pageTitle: {
-    fontSize: 30,
-    color: colors.white,
-    fontFamily: "BodoniBold",
-    alignContent: "space-between",
-    marginLeft: 8,
-  },
-  icon: { marginTop: 40, marginHorizontal: 1, color: colors.white },
-  prevPageLink: {
-    marginTop: 50,
-    marginHorizontal: 1,
-    color: colors.white,
-    fontSize: 15,
-  },
-  customerDetailBox: {
+  agentSummaryOverallBox: {
     height: 250,
     backgroundColor: colors.white,
     paddingVertical: 10,
     paddingHorizontal: 5,
+    justifyContent: "space-between",
   },
-  customerDetailLineItemBox: {
+  agentSummaryBoxRow: {
     flexDirection: "row",
-    paddingVertical: 10,
+    justifyContent: "space-evenly",
+    width: "100%",
+    height: 90,
   },
-  customerDetailLineItemIcons: {
-    marginHorizontal: 15,
+  agentSummaryBoxTitleBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 5,
+    width: (Dimensions.get("window").width / 2) * 0.85,
+  },
+  agentSummaryBoxContent: {
+    fontSize: 25,
     color: colors.theme,
+    width: (Dimensions.get("window").width / 2) * 0.85,
+    padding: 5,
   },
-  customerDetailLineItemContent: { fontSize: 15 },
-  RecommendationButtonText: {
+  agentSummaryBoxTitle: {
+    fontWeight: "bold",
+    fontSize: 13,
+  },
+  verticleLine: {
+    height: "100%",
+    width: 1,
+    backgroundColor: "#909090",
+  },
+  horizontalLine: {
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
+    width: "92%",
+    alignSelf: "center",
+  },
+  infoIcon: {
     fontSize: 15,
     color: colors.theme,
-    fontFamily: "BodoniBold",
-    alignContent: "space-between",
-    marginLeft: 8,
-  },
-  StatisticsButtonText: {
-    fontSize: 15,
-    color: colors.theme,
-    fontFamily: "BodoniBold",
-    alignContent: "space-between",
-    marginLeft: 8,
-  },
-  ActiveTabButton: {
-    alignItems: "center",
-    flex: 1,
-    backgroundColor: colors.white,
-    padding: 10,
-    borderBottomColor: colors.yellow,
-    borderBottomWidth: 5,
-  },
-  InActiveTabButton: {
-    alignItems: "center",
-    flex: 1,
-    backgroundColor: colors.white,
-    padding: 10,
-  },
-  RecommendationOrStatisticsView: {
-    height: 1000,
   },
 });
 

@@ -3,18 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   StatusBar,
-  TextInput,
   ScrollView,
-  Dimensions,
-  useWindowDimensions,
   TouchableOpacity,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../../assets/colors/colors";
-import { TabView, SceneMap } from "react-native-tab-view";
 
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -23,6 +19,19 @@ import Feather from "react-native-vector-icons/Feather";
 import { useFonts } from "expo-font";
 import Statistics from "./Statistics";
 import Recommendations from "./Recommendations";
+
+// import styles and components
+import {
+  container,
+  headerContainer,
+  headerWithoutSearch,
+  prevPageLinkContentBox,
+  subTabText,
+  activeSubTabButton,
+  inactiveSubTabButton,
+  prevPageLink,
+} from "../../styles";
+import HeaderText from "../../components/HeaderText";
 
 /* Actual Customer Detail Screen */
 
@@ -49,26 +58,26 @@ const CustomerDetailScreen = ({ route, navigation }) => {
     return (
       // Overall Container Wrapper
       <ScrollView
-        style={styles.container}
+        style={container}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0]}
         bounces={false}
       >
         {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.iconTitle}>
+        <View style={headerWithoutSearch}>
+          <View style={prevPageLinkContentBox}>
             <Ionicons
               name="chevron-back"
               size={32}
               color={colors.white}
-              style={styles.icon}
-              onPress={() => navigation.goBack()}
               title="Go back"
+              onPress={() => navigation.goBack()}
             />
-            <Text style={styles.prevPageLink}>Customers</Text>
+            <Text style={prevPageLink}>Customers</Text>
           </View>
-
-          <Text style={styles.pageTitle}>{customer.name}</Text>
+          <View style={headerContainer}>
+            <HeaderText text={customer.name} />
+          </View>
         </View>
 
         {/* Content Body */}
@@ -110,8 +119,8 @@ const CustomerDetailScreen = ({ route, navigation }) => {
             }}
           />
           <View style={styles.customerDetailLineItemBox}>
-            <AntDesign
-              name="mobile1"
+            <MaterialIcons
+              name="card-membership"
               style={styles.customerDetailLineItemIcons}
             />
             <Text style={styles.customerDetailLineItemContent}>
@@ -119,13 +128,19 @@ const CustomerDetailScreen = ({ route, navigation }) => {
             </Text>
           </View>
           <View style={styles.customerDetailLineItemBox}>
-            <Feather name="mail" style={styles.customerDetailLineItemIcons} />
+            <MaterialCommunityIcons
+              name="account-clock"
+              style={styles.customerDetailLineItemIcons}
+            />
             <Text style={styles.customerDetailLineItemContent}>
               Member since {customer.joindate}
             </Text>
           </View>
           <View style={styles.customerDetailLineItemBox}>
-            <AntDesign name="home" style={styles.customerDetailLineItemIcons} />
+            <Feather
+              name="dollar-sign"
+              style={styles.customerDetailLineItemIcons}
+            />
             <Text style={styles.customerDetailLineItemContent}>
               Total spending so far: ${customer.totalspent}
             </Text>
@@ -143,27 +158,25 @@ const CustomerDetailScreen = ({ route, navigation }) => {
           <TouchableOpacity
             style={[
               page === "recommendations"
-                ? styles.ActiveTabButton
-                : styles.InActiveTabButton,
+                ? activeSubTabButton
+                : inactiveSubTabButton,
             ]}
             onPress={() => {
               setPage("recommendations");
             }}
           >
-            <Text style={styles.TabButtonText}>Recommendations</Text>
+            <Text style={subTabText}>Recommendations</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[
-              page === "statistics"
-                ? styles.ActiveTabButton
-                : styles.InActiveTabButton,
+              page === "statistics" ? activeSubTabButton : inactiveSubTabButton,
             ]}
             onPress={() => {
               setPage("statistics");
             }}
           >
-            <Text style={styles.TabButtonText}>Statistics</Text>
+            <Text style={subTabText}>Statistics</Text>
           </TouchableOpacity>
         </View>
 
@@ -177,26 +190,6 @@ const CustomerDetailScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    height: 140,
-    backgroundColor: colors.theme,
-    padding: 10,
-  },
-  iconTitle: { flexDirection: "row" },
-  pageTitle: {
-    fontSize: 30,
-    color: colors.white,
-    fontFamily: "BodoniBold",
-    alignContent: "space-between",
-    marginLeft: 8,
-  },
-  icon: { marginTop: 40, marginHorizontal: 1, color: colors.white },
-  prevPageLink: {
-    marginTop: 50,
-    marginHorizontal: 1,
-    color: colors.white,
-    fontSize: 15,
-  },
   customerDetailBox: {
     height: 250,
     backgroundColor: colors.white,
@@ -213,31 +206,6 @@ const styles = StyleSheet.create({
     color: colors.theme,
   },
   customerDetailLineItemContent: { fontSize: 15 },
-  TabButtonText: {
-    fontSize: 15,
-    color: colors.theme,
-    fontFamily: "BodoniBold",
-    alignContent: "space-between",
-    marginLeft: 8,
-  },
-
-  ActiveTabButton: {
-    alignItems: "center",
-    flex: 1,
-    backgroundColor: colors.white,
-    padding: 10,
-    borderBottomColor: colors.yellow,
-    borderBottomWidth: 5,
-  },
-  InActiveTabButton: {
-    alignItems: "center",
-    flex: 1,
-    backgroundColor: colors.white,
-    padding: 10,
-  },
-  RecommendationOrStatisticsView: {
-    height: 1000,
-  },
 });
 
 export default CustomerDetailScreen;
