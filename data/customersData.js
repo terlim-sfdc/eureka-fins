@@ -33,7 +33,7 @@ const customersData = [
     id: 2,
     name: "Terence Lim",
     phone: "91234501",
-    email: "terlimws@gmail.com",
+    email: "terencelim@outlook.com",
     address: "11 Leonie Hill #12-03, Singapore 239488",
     joindate: "11 Jan 2010",
     membership: "silver",
@@ -62,12 +62,42 @@ const customersData = [
   {
     id: 3,
     name: "Ji Soo Kim",
-    phone: "832930502",
+    phone: "83293002",
     email: "jisoo@gmail.com",
     address: "11 Leonie Hill #12-03, Singapore 239488",
     joindate: "11 Jan 2010",
     membership: "bronze",
     totalspent: "853.50",
+    recommendedItems: [
+      {
+        id: 1,
+        title: "Chain Strap Heeled Sandals - Black",
+        source: require("../assets/images/products/ChainStrapHeeledSandals.png"),
+        probability: 92,
+      },
+      {
+        id: 2,
+        title: "Snap Button Mini Short Wallet",
+        source: require("../assets/images/products/SnapButtonMiniShortWallet.png"),
+        probability: 73,
+      },
+      {
+        id: 3,
+        title: "Metallic Accent Millee Flats",
+        source: require("../assets/images/products/MetallicAccentMilleFlats.png"),
+        probability: 65,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Ian Douglas",
+    phone: "93293232",
+    email: "iandouglas@salesforce.com",
+    address: "20 Seald Road, Singapore 239488",
+    joindate: "11 Jan 2013",
+    membership: "gold",
+    totalspent: "1823.30",
     recommendedItems: [
       {
         id: 1,

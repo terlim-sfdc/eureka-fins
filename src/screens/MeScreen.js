@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AppLoading from "expo-app-loading";
-import colors from "../../../assets/colors/colors";
+import colors from "../../assets/colors/colors";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 import { useFonts } from "expo-font";
-import Monthly from "./Monthly";
-import Weekly from "./Weekly";
-import Yearly from "./Yearly";
+import Monthly from "./Me/Monthly";
+import Weekly from "./Me/Weekly";
+import Yearly from "./Me/Yearly";
 
 // Import components and styles
 import {
@@ -28,9 +28,9 @@ import {
   subTabText,
   activeSubTabButton,
   inactiveSubTabButton,
-} from "../../styles";
-import HeaderText from "../../components/HeaderText";
-import SearchBar from "../../components/SearchBar";
+} from "../styles";
+import HeaderText from "../components/HeaderText";
+import SearchBar from "../components/SearchBar";
 
 /* Actual Customer Detail Screen */
 
@@ -46,8 +46,8 @@ const MeScreen = ({ route, navigation }) => {
     /* load custom fonts */
   }
   let [fontsLoaded] = useFonts({
-    Bodoni: require("../../../assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("../../../assets/fonts/Bodoni-bold.ttf"),
+    Bodoni: require("../../assets/fonts/Bodoni.ttf"),
+    BodoniBold: require("../../assets/fonts/Bodoni-bold.ttf"),
   });
 
   // page is weekly, monthly, yearly

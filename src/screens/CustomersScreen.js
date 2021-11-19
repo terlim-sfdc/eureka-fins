@@ -17,9 +17,12 @@ import colors from "../../assets/colors/colors";
 import customersData from "../../data/customersData";
 import trendingNowData from "../../data/trendingNowData";
 
+import CustomerCards from "../components/CustomerCards";
+
 // Import components and styles
 import HeaderText from "../components/HeaderText";
 import SearchBar from "../components/SearchBar";
+import TrendingNowCards from "../components/TrendingNowCards";
 import {
   container,
   headerWithSearch,
@@ -32,6 +35,12 @@ const CustomersScreen = ({ navigation }) => {
   /* Set up state for search term */
   const [term, setTerm] = useState("");
 
+  const filteredCustomerList = customersData.filter(
+    (customer) =>
+      customer.name.toLowerCase().includes(term.toLowerCase()) ||
+      customer.email.toLowerCase().includes(term.toLowerCase())
+  );
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -43,7 +52,7 @@ const CustomersScreen = ({ navigation }) => {
   };
   return (
     // Overall Container Wrapper
-    <ScrollView stickyHeaderIndices={[0]} bounces={false} style={container}>
+    <View stickyHeaderIndices={[0]} bounces={false} style={container}>
       {/* Header */}
       <View style={headerWithSearch}>
         <View style={headerContainer}>
@@ -70,88 +79,31 @@ const CustomersScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       {/* Customer Cards */}
-      <View style={sectionSubHeadingBox}>
-        <Text style={sectionSubHeadingText}>Your Customers</Text>
-        <Text>SEE ALL</Text>
-      </View>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={customersData}
-        keyExtractor={(item) => item.id}
-        renderItem={(customer) => {
-          return (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("CustomerDetailScreen", {
-                  customer: customer.item,
-                })
-              }
-            >
-              <View style={styles.customerItem}>
-                <Text style={styles.customerCardName}>
-                  {customer.item.name}
-                </Text>
-                <Text style={styles.customerCardPhone}>
-                  {customer.item.phone}
-                </Text>
-                <Text style={styles.customerCardEmail}>
-                  {customer.item.email}
-                </Text>
-                <Text style={styles.customerCardMemberSince}>
-                  Member Since {customer.item.joindate}
-                </Text>
-                <View style={styles.customerMembershipBox}>
-                  {customer.item.membership === "gold" && (
-                    <Image
-                      source={membershipImage.gold}
-                      style={styles.customerCardMembershipTierImage}
-                    />
-                  )}
-                  {customer.item.membership === "silver" && (
-                    <Image
-                      source={membershipImage.silver}
-                      style={styles.customerCardMembershipTierImage}
-                    />
-                  )}
-                  {customer.item.membership === "bronze" && (
-                    <Image
-                      source={membershipImage.bronze}
-                      style={styles.customerCardMembershipTierImage}
-                    />
-                  )}
-                  <Text style={styles.customerCardMembershipTier}>
-                    {customer.item.membership}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      {term == "" && (
+        <CustomerCards
+          navigate={navigation.navigate}
+          customersData={customersData}
+          horizontal={true}
+        />
+      )}
 
-      {/* Trending Now Cards */}
-      <View style={sectionSubHeadingBox}>
-        <Text style={sectionSubHeadingText}>Trending Now</Text>
-        <Text>SEE ALL</Text>
-      </View>
+      {/* Customers Cards with search term */}
+      {term != "" && (
+        <CustomerCards
+          navigate={navigation.navigate}
+          customersData={filteredCustomerList}
+          horizontal={false}
+        />
+      )}
 
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={trendingNowData}
-        keyExtractor={(trendingItem) => trendingItem.id}
-        renderItem={(trendingItem) => {
-          return (
-            <TouchableOpacity>
-              <View style={styles.trendingNowItemsView}>
-                <Image source={trendingItem.item.source} />
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </ScrollView>
+      {/* Trending Now Cards - shows up only when search term is blank */}
+      {term == "" && (
+        <TrendingNowCards
+          navigate={navigation.navigate}
+          trendingNowData={trendingNowData}
+        />
+      )}
+    </View>
   );
 };
 
@@ -172,45 +124,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "black",
-  },
-  customerItem: {
-    backgroundColor: colors.white,
-    padding: 15,
-    marginVertical: 8,
-    marginLeft: 15,
-    height: 152,
-    width: 329,
-    borderRadius: 10,
-    justifyContent: "space-between",
-  },
-
-  customerCardName: { fontSize: 25, fontWeight: "bold" },
-  customerCardPhone: { fontSize: 15, fontWeight: "bold" },
-  customerCardEmail: { fontSize: 15 },
-  customerCardMemberSince: { fontSize: 15 },
-  customerCardMembershipTier: {
-    textTransform: "uppercase",
-    padding: 5,
-  },
-  customerCardMembershipTierImage: {
-    width: 25,
-    height: 35,
-    padding: 5,
-  },
-  customerMembershipBox: {
-    position: "absolute",
-    right: 10,
-    top: 55,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  trendingNowItemsView: {
-    justifyContent: "space-between",
-    padding: 5,
-    flexDirection: "row",
-    marginHorizontal: 7,
-    marginTop: 7,
   },
 });
 

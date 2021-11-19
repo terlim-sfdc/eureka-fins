@@ -10,6 +10,23 @@ import {
 } from "react-native";
 import colors from "../../../assets/colors/colors";
 import { Surface, useTheme } from "react-native-paper";
+
+// import styles and components
+import {
+  container,
+  headerContainer,
+  headerWithoutSearch,
+  prevPageLinkContentBox,
+  sectionSubHeadingBox,
+  sectionSubHeadingText,
+  subTabText,
+  activeSubTabButton,
+  inactiveSubTabButton,
+  prevPageLink,
+  subTabScreenContainer,
+  surfaceInfoCards,
+} from "../../styles";
+
 import {
   LineChart,
   BarChart,
@@ -46,21 +63,17 @@ const Statistics = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.subtitleContainer}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-          Spending by categories
-        </Text>
+    <View style={subTabScreenContainer}>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Spending by categories</Text>
       </View>
       <Image
         source={require("../../../assets/images/statistics/DonutChart.png")}
         style={{ alignSelf: "center" }}
       />
 
-      <View style={styles.subtitleContainer}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-          Spending Trend by Month
-        </Text>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Spending Trend by Month</Text>
       </View>
 
       <BarChart
@@ -70,10 +83,8 @@ const Statistics = (props) => {
         chartConfig={chartConfig}
       />
 
-      <View style={styles.subtitleContainer}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-          Purchase History
-        </Text>
+      <View style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Purchase History</Text>
       </View>
       <Surface style={[styles.purchaseHistoryCards]}>
         <Text style={styles.historyCardText}>
@@ -99,15 +110,6 @@ const Statistics = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: colors.white, height: "100%" },
-  subtitleContainer: {
-    justifyContent: "space-between",
-    padding: 7,
-    flexDirection: "row",
-    marginHorizontal: 15,
-    marginTop: 15,
-    marginBottom: 15,
-  },
   purchaseHistoryCards: {
     margin: 5,
     height: 120,

@@ -22,7 +22,7 @@ import colors from "./assets/colors/colors";
 
 import HomeScreen from "./src/screens/HomeScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
-import MeScreen from "./src/screens/Me/MeScreen";
+import MeScreen from "./src/screens/MeScreen";
 import LocateItemScreen from "./src/screens/CustomerDetails/LocateItemScreen";
 import CustomerDetailScreen from "./src/screens/CustomerDetails/CustomerDetailScreen";
 import RecommendedItemsCardsScreen from "./src/screens/CustomerDetails/RecommendedItemsCardsScreen";
