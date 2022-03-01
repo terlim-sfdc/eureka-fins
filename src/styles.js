@@ -1,3 +1,4 @@
+import { Dimensions } from "react-native";
 import colors from "../assets/colors/colors";
 
 export const container = {
@@ -6,10 +7,9 @@ export const container = {
   marginBottom: 0,
 };
 
-export const headerWithSearch = {
-  height: 177,
+export const headerWithBackNav = {
+  height: 140,
   backgroundColor: colors.theme,
-  padding: 10,
 };
 
 export const headerWithoutSearch = {
@@ -19,16 +19,14 @@ export const headerWithoutSearch = {
 };
 
 export const headerContainer = {
-  marginTop: 65,
+  marginTop: 60,
   marginLeft: 10,
 };
 
 export const sectionSubHeadingBox = {
   justifyContent: "space-between",
-  padding: 7,
+  padding: 15,
   flexDirection: "row",
-  marginHorizontal: 15,
-  marginTop: 6,
 };
 
 export const sectionSubHeadingText = {
@@ -45,7 +43,7 @@ export const prevPageLink = {
 export const subTabText = {
   fontSize: 15,
   color: colors.theme,
-  fontFamily: "BodoniBold",
+  fontFamily: "ProximaNova",
   alignContent: "space-between",
   marginLeft: 8,
 };
@@ -55,7 +53,7 @@ export const activeSubTabButton = {
   flex: 1,
   backgroundColor: colors.white,
   padding: 10,
-  borderBottomColor: colors.yellow,
+  borderBottomColor: colors.theme,
   borderBottomWidth: 5,
 };
 
@@ -85,8 +83,65 @@ export const surfaceInfoCards = {
 
 export const prevPageLinkContentBox = {
   flexDirection: "row",
-  marginTop: 25,
   alignItems: "center",
+  padding: 0,
+};
+
+export const summaryOverallBox = {
+  height: 300,
+  backgroundColor: colors.white,
+  justifyContent: "space-between",
+};
+
+export const summaryBoxRow = {
+  flexDirection: "row",
+  justifyContent: "space-evenly",
+  width: "100%",
+  height: 100,
+};
+
+export const summaryBoxTitleBox = {
+  flexDirection: "row",
+  justifyContent: "space-between",
   padding: 5,
-  position: "absolute",
+  width: (Dimensions.get("window").width / 2) * 0.85,
+};
+
+export const summaryBoxContent = {
+  fontSize: 20,
+  color: colors.black,
+  width: (Dimensions.get("window").width / 2) * 0.85,
+  padding: 5,
+  fontWeight: "bold",
+};
+
+export const summaryBoxSubContent = {
+  fontSize: 12,
+  color: colors.black,
+  fontWeight: "bold",
+};
+
+export const summaryBoxSubContentContainer = {
+  flexDirection: "row",
+  padding: 5,
+};
+
+export const summaryBoxTitle = {
+  fontWeight: "bold",
+  fontSize: 13,
+  color: colors.theme,
+};
+
+export const verticleLine = {
+  height: "80%",
+  width: 1,
+  backgroundColor: colors.line,
+  alignSelf: "center",
+};
+
+export const horizontalLine = {
+  borderWidth: 1,
+  width: "92%",
+  alignSelf: "center",
+  borderColor: colors.line,
 };

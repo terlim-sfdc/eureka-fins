@@ -27,7 +27,7 @@ import {
   inactiveSubTabButton,
   prevPageLink,
 } from "../../styles";
-import HeaderText from "../../components/HeaderText";
+import HeaderText from "../../components/HeaderTextWithAvatar";
 
 const RecommendedItemsCardsScreen = ({ route, navigation }) => {
   // Check which item was clicked, and show that item first.
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: 30,
     color: colors.white,
-    fontFamily: "BodoniBold",
+    fontFamily: "ProximaNova",
     alignContent: "space-between",
     marginLeft: 8,
   },

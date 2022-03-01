@@ -31,7 +31,7 @@ import {
   inactiveSubTabButton,
   prevPageLink,
 } from "../../styles";
-import HeaderText from "../../components/HeaderText";
+import HeaderText from "../../components/HeaderTextWithAvatar";
 
 /* Actual Customer Detail Screen */
 
@@ -45,8 +45,7 @@ const CustomerDetailScreen = ({ route, navigation }) => {
     /* load custom fonts */
   }
   let [fontsLoaded] = useFonts({
-    Bodoni: require("../../../assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("../../../assets/fonts/Bodoni-bold.ttf"),
+    ProximaNova: require("../../../assets/fonts/Proxima-Nova.otf"),
   });
 
   const [index, setIndex] = useState(0);

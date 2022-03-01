@@ -17,6 +17,7 @@ const SearchBar = ({ term, onTermChange }) => {
         defaultValue={"Search"}
         value={term}
         onChangeText={(newTerm) => onTermChange(newTerm)}
+        clearButtonMode="always"
       />
     </View>
   );
@@ -24,7 +25,7 @@ const SearchBar = ({ term, onTermChange }) => {
 
 const styles = StyleSheet.create({
   search: {
-    backgroundColor: "#5d4ba3",
+    backgroundColor: "#f41005",
     borderRadius: 5,
     marginHorizontal: 15,
     flexDirection: "row",

@@ -1,9 +1,3 @@
-/*
-from udemy
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
-*/
-
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -14,6 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -21,8 +16,10 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import colors from "./assets/colors/colors";
 
 import HomeScreen from "./src/screens/HomeScreen";
+import TrendsScreen from "./src/screens/TrendsScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
-import MeScreen from "./src/screens/MeScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+
 import LocateItemScreen from "./src/screens/CustomerDetails/LocateItemScreen";
 import CustomerDetailScreen from "./src/screens/CustomerDetails/CustomerDetailScreen";
 import RecommendedItemsCardsScreen from "./src/screens/CustomerDetails/RecommendedItemsCardsScreen";
@@ -54,11 +51,7 @@ const TabNavigator = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="lightning-bolt-outline"
-              size={32}
-              color={color}
-            />
+            <Entypo name="home" size={30} color={color} />
           ),
         }}
       />
@@ -67,16 +60,16 @@ const TabNavigator = () => {
         component={CustomersScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <SimpleLineIcons name="diamond" size={25} color={color} />
+            <MaterialCommunityIcons name="face" size={32} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Me"
-        component={MeScreen}
+        name="Trends"
+        component={TrendsScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="star-o" size={32} color={color} />
+            <MaterialIcons name="bar-chart" size={32} color={color} />
           ),
         }}
       />
@@ -84,17 +77,19 @@ const TabNavigator = () => {
   );
 };
 
-const App = () => {
-  // componentDidMount() {
-  //   // Hides native splash screen after 1s
-  //   setTimeout(async () => {
-  //     await SplashScreen.hideAsync();
-  //   }, 200);
-  // }
+const linking = {
+  prefixes: [
+    /* your linking prefixes */
+  ],
+  config: {
+    /* configuration for matching screens with paths */
+  },
+};
 
+const App = () => {
   let [fontsLoaded] = useFonts({
-    Bodoni: require("./assets/fonts/Bodoni.ttf"),
-    BodoniBold: require("./assets/fonts/Bodoni-bold.ttf"),
+    ProximaNova: require("./assets/fonts/Proxima-Nova.otf"),
+    ProximaNovaBold: require("./assets/fonts/Proxima-Nova-Bold.otf"),
   });
 
   useEffect(() => {
@@ -112,7 +107,7 @@ const App = () => {
             name="TabNavigator"
             component={TabNavigator}
             options={{
-              title: "Eureka Screen",
+              title: "BPI Home Screen",
               headerShown: false,
               headerStyle: {
                 backgroundColor: colors.theme,
@@ -141,6 +136,21 @@ const App = () => {
             component={RecommendedItemsCardsScreen}
             options={{
               title: "Recommended Items Cards Screen",
+              headerShown: false,
+              headerStyle: {
+                backgroundColor: colors.theme,
+              },
+              headerTitleStyle: { color: "white" },
+              headerTintColor: colors.white,
+            }}
+          />
+          <Stack.Screen
+            name="ProfileScreen"
+            // Default card shows first item
+            initialParams={{ itemClicked: 1 }}
+            component={ProfileScreen}
+            options={{
+              title: "Profile Screen",
               headerShown: false,
               headerStyle: {
                 backgroundColor: colors.theme,

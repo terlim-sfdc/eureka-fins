@@ -62,7 +62,7 @@ const customersData = [
   {
     id: 3,
     name: "Ji Soo Kim",
-    phone: "83293002",
+    phone: "  ",
     email: "jisoo@gmail.com",
     address: "11 Leonie Hill #12-03, Singapore 239488",
     joindate: "11 Jan 2010",

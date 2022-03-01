@@ -1,30 +1,33 @@
 {
   "expo": {
-    "name": "superapp",
-    "slug": "superapp",
+    "name": "Eureka FINS",
+    "slug": "eureka-fins",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/eureka-logo.png",
+    "icon": "./assets/images/eureka-fins-logo.png",
     "splash": {
-      "image": "./assets/images/eureka-splash.png",
+      "image": "./assets/images/eureka-fins-splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#230881"
+      "backgroundColor": "#b10101"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#230881"
+        "backgroundColor": "#b10101"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }
