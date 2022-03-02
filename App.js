@@ -9,9 +9,6 @@ import * as SplashScreen from "expo-splash-screen";
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import { Feather, FontAwesome } from "@expo/vector-icons";
-import AntDesign from "react-native-vector-icons/AntDesign";
 
 import colors from "./assets/colors/colors";
 
@@ -19,10 +16,6 @@ import HomeScreen from "./src/screens/HomeScreen";
 import TrendsScreen from "./src/screens/TrendsScreen";
 import CustomersScreen from "./src/screens/CustomersScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
-
-import LocateItemScreen from "./src/screens/CustomerDetails/LocateItemScreen";
-import CustomerDetailScreen from "./src/screens/CustomerDetails/CustomerDetailScreen";
-import RecommendedItemsCardsScreen from "./src/screens/CustomerDetails/RecommendedItemsCardsScreen";
 
 import { useFonts } from "expo-font";
 
@@ -116,34 +109,7 @@ const App = () => {
               headerTintColor: colors.white,
             }}
           />
-          <Stack.Screen
-            name="CustomerDetailScreen"
-            component={CustomerDetailScreen}
-            options={{
-              title: "Customer Detail Screen",
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: colors.theme,
-              },
-              headerTitleStyle: { color: "white" },
-              headerTintColor: colors.white,
-            }}
-          />
-          <Stack.Screen
-            name="RecommendedItemsCardsScreen"
-            // Default card shows first item
-            initialParams={{ itemClicked: 1 }}
-            component={RecommendedItemsCardsScreen}
-            options={{
-              title: "Recommended Items Cards Screen",
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: colors.theme,
-              },
-              headerTitleStyle: { color: "white" },
-              headerTintColor: colors.white,
-            }}
-          />
+
           <Stack.Screen
             name="ProfileScreen"
             // Default card shows first item
@@ -157,26 +123,6 @@ const App = () => {
               },
               headerTitleStyle: { color: "white" },
               headerTintColor: colors.white,
-            }}
-          />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
-          <Stack.Screen
-            name="LocateItemScreen"
-            component={LocateItemScreen}
-            options={{
-              title: "Locate Item",
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: colors.theme,
-              },
-              headerTitleStyle: { color: "white" },
-              headerTintColor: colors.white,
-              headerBackTitleVisible: false,
-              cardStyle: {
-                backgroundColor: "#FFFFFF",
-              },
-              headerLeft: () => <View></View>,
             }}
           />
         </Stack.Group>

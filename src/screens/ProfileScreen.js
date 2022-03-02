@@ -16,22 +16,12 @@ import { Button } from "react-native-ios-kit";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/colors/colors";
 
-import customersData from "../../data/customersData";
-import trendingNowData from "../../data/trendingNowData";
-
-import CustomerCards from "../components/CustomerCards";
-
 // Import components and styles
 import HeaderTextWithoutAvatar from "../components/HeaderTextWithoutAvatar";
-import SearchBar from "../components/SearchBar";
-import TrendingNowCards from "../components/TrendingNowCards";
 import {
   container,
   headerWithBackNav,
   headerContainer,
-  sectionSubHeadingBox,
-  sectionSubHeadingText,
-  prevPageLinkContentBox,
   horizontalLine,
 } from "../styles";
 

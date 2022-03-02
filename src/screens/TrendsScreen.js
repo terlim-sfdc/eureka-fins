@@ -1,25 +1,11 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  StatusBar,
-  TextInput,
-  Pressable,
-  FlatList,
-  Image,
-  ScrollView,
-} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, StyleSheet, StatusBar, ScrollView } from "react-native";
 import colors from "../../assets/colors/colors";
 
-import { Surface, useTheme } from "react-native-paper";
+import { Surface } from "react-native-paper";
 
 // Import components and styles
 import HeaderText from "../components/HeaderTextWithAvatar";
-import SearchBar from "../components/SearchBar";
-import TrendingNowCards from "../components/TrendingNowCards";
 import {
   container,
   headerWithoutSearch,

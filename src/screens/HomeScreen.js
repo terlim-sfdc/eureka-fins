@@ -5,20 +5,13 @@ import {
   StyleSheet,
   StatusBar,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
-  Linking,
-  Touchable,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
-import { DataTable } from "react-native-paper";
 
-import Feather from "react-native-vector-icons/Feather";
 import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { Surface, useTheme } from "react-native-paper";
+import { Surface } from "react-native-paper";
 
 // Import components and styles
 import HeaderText from "../components/HeaderTextWithAvatar";
@@ -26,8 +19,6 @@ import {
   container,
   headerWithoutSearch,
   headerContainer,
-  sectionSubHeadingBox,
-  sectionSubHeadingText,
   subTabText,
   activeSubTabButton,
   inactiveSubTabButton,
@@ -41,13 +32,10 @@ import {
   verticleLine,
   summaryBoxSubContentContainer,
 } from "../styles";
-import SearchBar from "../components/SearchBar";
-import { WebView } from "react-native-webview";
 
 import Commercial from "./SubViews/Commercial";
 import Retail from "./SubViews/Retail";
 import Investment from "./SubViews/Investment";
-import { color } from "react-native-reanimated";
 
 const HomeScreen = ({ navigation }) => {
   /* Set up state for search term */
