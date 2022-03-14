@@ -9,13 +9,15 @@ import * as SplashScreen from "expo-splash-screen";
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import colors from "./assets/colors/colors";
 
-import HomeScreen from "./src/screens/HomeScreen";
-import TrendsScreen from "./src/screens/TrendsScreen";
-import CustomersScreen from "./src/screens/CustomersScreen";
-import ProfileScreen from "./src/screens/ProfileScreen";
+import HomeScreen from "./src/Screens/HomeScreen";
+import TrendsScreen from "./src/Screens/TrendsScreen";
+import CustomersScreen from "./src/Screens/CustomersScreen";
+import ProfileScreen from "./src/Screens/ProfileScreen";
+import AboutScreen from "./src/Screens/AboutScreen";
 
 import { useFonts } from "expo-font";
 
@@ -63,6 +65,15 @@ const TabNavigator = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="bar-chart" size={32} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="info" size={32} color={color} />
           ),
         }}
       />

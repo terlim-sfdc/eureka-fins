@@ -18,6 +18,50 @@ import { WebView } from "react-native-webview";
 
 import { useFonts } from "expo-font";
 
+// moment library to manage time
+const moment = require("moment");
+
+// JWT library to sign token
+const sign = require("jwt-encode");
+
+// import variables from tableauConfig.js
+import {
+  connectedAppSecretId,
+  connectedAppClientId,
+  connectedAppSecretKey,
+  username,
+  tableauservername,
+  js_api,
+  uuidData,
+} from "../../tableauConfig";
+
+// Customers Dashboard URL
+const customer_dashboard_url =
+  tableauservername + "/t/gsisg/views/Superstore/Customers";
+
+// setting up JWT details and signing token
+const payload = {
+  iss: connectedAppClientId,
+  exp: moment.utc().add(10, "minutes").unix(), //exp: 1647244533,
+  jti: uuidData,
+  aud: "tableau",
+  sub: username,
+  scp: ["tableau:views:embed"],
+};
+const headers = {
+  kid: connectedAppSecretId,
+  iss: connectedAppClientId,
+};
+
+const jwtSignToken = sign(payload, connectedAppSecretKey, headers);
+
+let htmlCode =
+  "<html><head>" +
+  "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+  '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+  `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${jwtSignToken}"></tableau-viz></body>` +
+  "</head></html>";
+
 // Import components and styles
 import {
   container,
@@ -186,9 +230,10 @@ const CustomersScreen = ({ route, navigation }) => {
         </Surface>
         <View style={styles.container}>
           <WebView
-            scrollEnabled={false}
+            scrollEnabled={true}
+            originWhitelist={["*"]}
             source={{
-              uri: "https://public.tableau.com/views/10_0SuperstoreSales/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
+              html: htmlCode,
             }}
             style={styles.webview}
           />
@@ -200,7 +245,7 @@ const CustomersScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 600,
+    height: 350,
   },
   webview: {
     flex: 1,

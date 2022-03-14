@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+tableauConfig.js
 
 # macOS
 .DS_Store

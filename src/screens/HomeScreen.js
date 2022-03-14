@@ -33,9 +33,9 @@ import {
   summaryBoxSubContentContainer,
 } from "../styles";
 
-import Commercial from "./SubViews/Commercial";
-import Retail from "./SubViews/Retail";
-import Investment from "./SubViews/Investment";
+import Commercial from "./SubScreens/Commercial";
+import Retail from "./SubScreens/Retail";
+import Investment from "./SubScreens/Investment";
 
 const HomeScreen = ({ navigation }) => {
   /* Set up state for search term */
