@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
+import axios from "axios";
 
 import { useFonts } from "expo-font";
 import { Surface } from "react-native-paper";
@@ -42,6 +43,10 @@ import Investment from "./SubScreens/Investment";
 const HomeScreen = ({ navigation }) => {
   /* Set up state for search term */
   const [term, setTerm] = useState("");
+
+  const [isLoadingTotalCustomers, setIsLoadingTotalCustomers] = useState(false);
+
+  const [customers, setCustomers] = useState([]);
 
   // page is retail, commercial, investment
   const [page, setPage] = useState("retail");
@@ -84,11 +89,37 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
+  // calls Mulesoft API to get Total Customers from Database
+  const updateTotalCustomers = async () => {
+    try {
+      setIsLoadingTotalCustomers(true);
+      //apiCallHeader contains the authentication using Basic Auth
+      const response = await axios.get(
+        "http://eureka-fins.sg-s1.cloudhub.io/customers"
+      );
+      if (response.status === 200) {
+        setCustomers(response.data);
+        setIsLoadingTotalCustomers(false);
+        return;
+      } else {
+        throw new Error("Failed to fetch customers from Mulesoft API");
+      }
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Customer Data fetching cancelled");
+      } else {
+        console.log(error);
+        setIsLoadingTotalCustomers(false);
+      }
+    }
+  };
+
   // https://reactnavigation.org/docs/function-after-focusing-screen/
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // updates the state of Share Price with ticker on screen focus
       updateSharePrice("CRM");
+      updateTotalCustomers();
     });
     return unsubscribe;
   }, [navigation]);
@@ -128,7 +159,11 @@ const HomeScreen = ({ navigation }) => {
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Total Customers</Text>
               </View>
-              <Text style={summaryBoxContent}>395,205</Text>
+              <Text style={summaryBoxContent}>
+                {isLoadingTotalCustomers === true
+                  ? "Loading..."
+                  : customers.length}
+              </Text>
               <View style={summaryBoxSubContentContainer}>
                 <Text style={[summaryBoxSubContent, { color: colors.green }]}>
                   +183{" "}
