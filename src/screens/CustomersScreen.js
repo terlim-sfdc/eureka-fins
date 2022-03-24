@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -36,33 +36,6 @@ import {
   uuidData,
 } from "../../tableauConfig";
 
-// Customers Dashboard URL
-const customer_dashboard_url =
-  tableauservername + "/t/gsisg/views/Superstore/Customers";
-
-// setting up JWT details and signing token
-const payload = {
-  iss: connectedAppClientId,
-  exp: moment.utc().add(10, "minutes").unix(), //exp: 1647244533,
-  jti: uuidData,
-  aud: "tableau",
-  sub: username,
-  scp: ["tableau:views:embed"],
-};
-const headers = {
-  kid: connectedAppSecretId,
-  iss: connectedAppClientId,
-};
-
-const jwtSignToken = sign(payload, connectedAppSecretKey, headers);
-
-let htmlCode =
-  "<html><head>" +
-  "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
-  '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-  `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${jwtSignToken}"></tableau-viz></body>` +
-  "</head></html>";
-
 // Import components and styles
 import {
   container,
@@ -84,13 +57,43 @@ import {
   summaryBoxSubContentContainer,
 } from "../styles";
 import HeaderText from "../components/HeaderTextWithAvatar";
-import SearchBar from "../components/SearchBar";
 
-/* Actual Customer Detail Screen */
+/* Customer Detail Screen */
 
 const CustomersScreen = ({ route, navigation }) => {
-  /* Set up state for search term */
-  const [term, setTerm] = useState("");
+  const [JwtToken, setJwtToken] = useState("");
+
+  const customer_dashboard_url =
+    "https://10az.online.tableau.com/t/gsisg/views/Superstore/Customers";
+
+  // setting up JWT details and signing token
+  const payload = {
+    iss: connectedAppClientId,
+    exp: moment.utc().add(3, "minutes").unix(), //exp: 1647244533,
+    jti: uuidData,
+    aud: "tableau",
+    sub: username,
+    scp: ["tableau:views:embed"],
+  };
+  const headers = {
+    kid: connectedAppSecretId,
+    iss: connectedAppClientId,
+  };
+  const updateJwtToken = () => {
+    setJwtToken(sign(payload, connectedAppSecretKey, headers));
+  };
+
+  // update jwt token when page loads
+  useEffect(() => {
+    updateJwtToken();
+  }, []);
+
+  const htmlCode =
+    "<html><head>" +
+    "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+    '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+    "</head></html>";
 
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
