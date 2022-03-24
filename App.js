@@ -100,7 +100,7 @@ const App = () => {
     // Hides native splash screen after 1s
     setTimeout(async () => {
       await SplashScreen.hideAsync();
-    }, 200);
+    }, 300);
   }, []);
 
   return (

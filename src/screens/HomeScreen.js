@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
         if (error) {
           console.error(error);
         }
-        setStockPrice(stockPrice);
+        setStockPrice(parseFloat(stockPrice).toFixed(2));
       }
     );
   };
@@ -87,11 +87,21 @@ const HomeScreen = ({ navigation }) => {
   // https://reactnavigation.org/docs/function-after-focusing-screen/
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      // updates the state of Share Price with ticker
+      // updates the state of Share Price with ticker on screen focus
       updateSharePrice("CRM");
     });
     return unsubscribe;
   }, [navigation]);
+
+  // refreshes every 3 secs and calls updateSharePrice
+  const refreshInterval = 3000;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateSharePrice("CRM");
+    }, refreshInterval);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, []);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -199,7 +209,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={summaryBoxContent}>{stockPrice}</Text>
                 <View style={summaryBoxSubContentContainer}>
                   <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                    +10.5{" "}
+                    Live Price{" "}
                   </Text>
                 </View>
               </TouchableOpacity>
