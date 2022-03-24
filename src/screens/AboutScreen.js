@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Linking,
   Image,
+  Dimensions,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
@@ -15,6 +16,7 @@ import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
 
 import slackLogo from "../../assets/images/slack-logo.png";
+import eurekaFinsMap from "../../assets/images/eureka_fins_map.png";
 
 // Import components and styles
 import { container, headerWithoutSearch, headerContainer } from "../styles";
@@ -23,6 +25,8 @@ import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 /* Actual Customer Detail Screen */
 
 const AboutScreen = ({ route, navigation }) => {
+  let { screenWidth, screenHeight } = Dimensions.get("window");
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -55,7 +59,7 @@ const AboutScreen = ({ route, navigation }) => {
 
         {/* Content Body */}
         <View style={styles.infoBackground}>
-          <Text style={styles.title}>About Eureka Retail</Text>
+          <Text style={styles.title}>About Eureka FINS</Text>
           <Text style={styles.content}>
             This app (Eureka Fins) is built using React Native, showcasing the
             flexibility of using pro-code and open source tools such as
@@ -64,8 +68,25 @@ const AboutScreen = ({ route, navigation }) => {
             Customer 360 experience.
           </Text>
 
+          <Image
+            source={eurekaFinsMap}
+            style={{
+              height: 492,
+              width: 349,
+              alignSelf: "center",
+              overflow: "visible",
+              marginBottom: 35,
+            }}
+          ></Image>
+
           <Text style={styles.title}>App Data</Text>
-          <Text style={styles.content}>Work in Progress...</Text>
+          <Text style={styles.content}>
+            Conceptually, the data displayed within the app comes from API built
+            using Mulesoft, which could potentially be residing on 3rd party
+            systems. The integrated dashboards are authenticated Tableau
+            Embedded dashboards, which can show different content based on the
+            user's profile.
+          </Text>
 
           <Text style={styles.title}>Connect with the Eureka Team</Text>
 
@@ -188,7 +209,7 @@ const AboutScreen = ({ route, navigation }) => {
             <View style={styles.slackButton}>
               <View>
                 <Text style={{ fontWeight: "bold" }}>Vivek Mahapatra</Text>
-                <Text>Senior Director</Text>
+                <Text>Regional VP</Text>
               </View>
               <View
                 style={{

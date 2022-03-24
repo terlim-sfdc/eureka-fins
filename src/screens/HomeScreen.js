@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import colors from "../../assets/colors/colors";
 
 import { useFonts } from "expo-font";
 import { Surface } from "react-native-paper";
+
+var sharePrice = require("share-price");
 
 // Import components and styles
 import HeaderText from "../components/HeaderTextWithAvatar";
@@ -44,6 +46,9 @@ const HomeScreen = ({ navigation }) => {
   // page is retail, commercial, investment
   const [page, setPage] = useState("retail");
 
+  /* Set up state for Stock Price */
+  const [stockPrice, setStockPrice] = useState("");
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -65,6 +70,28 @@ const HomeScreen = ({ navigation }) => {
       return "Afternoon, Terence";
     } else return "Morning, Terence";
   };
+
+  const updateSharePrice = (ticker) => {
+    //Using a callback function.
+    sharePrice.getSharePrice(
+      { stockSymbol: ticker },
+      function (stockPrice, error) {
+        if (error) {
+          console.error(error);
+        }
+        setStockPrice(stockPrice);
+      }
+    );
+  };
+
+  // https://reactnavigation.org/docs/function-after-focusing-screen/
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // updates the state of Share Price with ticker
+      updateSharePrice("CRM");
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -161,15 +188,21 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <View style={verticleLine}></View>
             <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Stock price</Text>
-              </View>
-              <Text style={summaryBoxContent}>US$34.65</Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +10.5{" "}
-                </Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  updateSharePrice("CRM");
+                }}
+              >
+                <View style={summaryBoxTitleBox}>
+                  <Text style={summaryBoxTitle}>Stock price</Text>
+                </View>
+                <Text style={summaryBoxContent}>{stockPrice}</Text>
+                <View style={summaryBoxSubContentContainer}>
+                  <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                    +10.5{" "}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </Surface>

@@ -20,13 +20,16 @@ import {
 } from "../../../tableauConfig";
 
 // Customers Dashboard URL
+// const customer_dashboard_url =
+//   tableauservername + "/t/gsisg/views/Superstore/Product";
+
 const customer_dashboard_url =
-  tableauservername + "/t/gsisg/views/Superstore/Product";
+  "https://10az.online.tableau.com/t/gsisg/views/Customers/Customers";
 
 // setting up JWT details and signing token
 const payload = {
   iss: connectedAppClientId,
-  exp: moment.utc().add(10, "minutes").unix(), //exp: 1647244533,
+  exp: moment.utc().add(3, "minutes").unix(), //exp: 1647244533,
   jti: uuidData,
   aud: "tableau",
   sub: username,
@@ -47,6 +50,7 @@ let htmlCode =
   "</head></html>";
 
 const Retail = (props) => {
+  console.log(jwtSignToken);
   return (
     <View style={styles.container}>
       <WebView

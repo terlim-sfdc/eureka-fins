@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   Dimensions,
+  Linking,
   TouchableOpacity,
 } from "react-native";
 import AppLoading from "expo-app-loading";
@@ -129,17 +130,25 @@ const CustomersScreen = ({ route, navigation }) => {
         <Surface style={summaryOverallBox}>
           <View style={summaryBoxRow}>
             <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Quality of service</Text>
-              </View>
-              <Text style={summaryBoxContent}>83/100</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(
+                    "slack://channel?team=T01GST6QY0G&id=C0380CQDRNU"
+                  )
+                }
+              >
+                <View style={summaryBoxTitleBox}>
+                  <Text style={summaryBoxTitle}>Quality of service</Text>
+                </View>
+                <Text style={summaryBoxContent}>73/100</Text>
 
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +183
-                </Text>
-                <Text style={summaryBoxSubContent}> from last month</Text>
-              </View>
+                <View style={summaryBoxSubContentContainer}>
+                  <Text style={[summaryBoxSubContent, { color: colors.red }]}>
+                    -18
+                  </Text>
+                  <Text style={summaryBoxSubContent}> from last month</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View style={verticleLine}></View>
             <View>
