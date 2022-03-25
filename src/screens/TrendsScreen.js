@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, StatusBar, ScrollView } from "react-native";
 import colors from "../../assets/colors/colors";
 
 import { Surface } from "react-native-paper";
 
 // Import components and styles
-import HeaderText from "../components/HeaderTextWithAvatar";
+import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 import {
   container,
   headerWithoutSearch,
@@ -23,8 +23,11 @@ import {
   horizontalLine,
 } from "../styles";
 import { color } from "react-native-reanimated";
+import AppContext from "../components/AppContext";
 
 const CustomersScreen = ({ navigation }) => {
+  const currentUserContext = useContext(AppContext);
+
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
   }
@@ -35,7 +38,11 @@ const CustomersScreen = ({ navigation }) => {
       {/* Header */}
       <View style={headerWithoutSearch}>
         <View style={headerContainer}>
-          <HeaderText text="Trends" navigation={navigation} />
+          <HeaderTextWithAvatar
+            text="Trends"
+            navigation={navigation}
+            currentUserContext={currentUserContext}
+          />
         </View>
       </View>
 

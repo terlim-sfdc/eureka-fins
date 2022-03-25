@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import { Button } from "react-native-paper";
 
 import slackLogo from "../../assets/images/slack-logo.png";
 import eurekaFinsMap from "../../assets/images/eureka_fins_map.png";
+import AppContext from "../components/AppContext";
 
 // Import components and styles
 import { container, headerWithoutSearch, headerContainer } from "../styles";
@@ -25,6 +26,8 @@ import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 /* Actual Customer Detail Screen */
 
 const AboutScreen = ({ route, navigation }) => {
+  const currentUserContext = useContext(AppContext);
+
   let { screenWidth, screenHeight } = Dimensions.get("window");
 
   if (Platform.OS == "ios") {
@@ -53,7 +56,11 @@ const AboutScreen = ({ route, navigation }) => {
         {/* Header */}
         <View style={headerWithoutSearch}>
           <View style={headerContainer}>
-            <HeaderTextWithAvatar text="About" navigation={navigation} />
+            <HeaderTextWithAvatar
+              text="About"
+              navigation={navigation}
+              currentUserContext={currentUserContext}
+            />
           </View>
         </View>
 

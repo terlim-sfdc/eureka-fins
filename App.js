@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -18,6 +18,8 @@ import TrendsScreen from "./src/Screens/TrendsScreen";
 import CustomersScreen from "./src/Screens/CustomersScreen";
 import ProfileScreen from "./src/Screens/ProfileScreen";
 import AboutScreen from "./src/Screens/AboutScreen";
+
+import AppContext from "./src/components/AppContext";
 
 import { useFonts } from "expo-font";
 
@@ -91,6 +93,14 @@ const linking = {
 };
 
 const App = () => {
+  //Global Variables for User Profile state
+  const [user, setUser] = useState("Terence");
+
+  const globalUserSettings = {
+    user: user,
+    setUser: setUser,
+  };
+
   let [fontsLoaded] = useFonts({
     ProximaNova: require("./assets/fonts/Proxima-Nova.otf"),
     ProximaNovaBold: require("./assets/fonts/Proxima-Nova-Bold.otf"),
@@ -104,41 +114,43 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Group>
-          <Stack.Screen
-            name="TabNavigator"
-            component={TabNavigator}
-            options={{
-              title: "BPI Home Screen",
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: colors.theme,
-              },
-              headerTitleStyle: { color: "white" },
-              headerTintColor: colors.white,
-            }}
-          />
+    <AppContext.Provider value={globalUserSettings}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Group>
+            <Stack.Screen
+              name="TabNavigator"
+              component={TabNavigator}
+              options={{
+                title: "Home Screen",
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: colors.theme,
+                },
+                headerTitleStyle: { color: "white" },
+                headerTintColor: colors.white,
+              }}
+            />
 
-          <Stack.Screen
-            name="ProfileScreen"
-            // Default card shows first item
-            initialParams={{ itemClicked: 1 }}
-            component={ProfileScreen}
-            options={{
-              title: "Profile Screen",
-              headerShown: false,
-              headerStyle: {
-                backgroundColor: colors.theme,
-              },
-              headerTitleStyle: { color: "white" },
-              headerTintColor: colors.white,
-            }}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
+            <Stack.Screen
+              name="ProfileScreen"
+              // Default card shows first item
+              initialParams={{ itemClicked: 1 }}
+              component={ProfileScreen}
+              options={{
+                title: "Profile Screen",
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: colors.theme,
+                },
+                headerTitleStyle: { color: "white" },
+                headerTintColor: colors.white,
+              }}
+            />
+          </Stack.Group>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppContext.Provider>
   );
 };
 
@@ -151,22 +163,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
-/*
-This was the way done by udemy
-const navigator = createStackNavigator(
-  {
-    Home: HomeScreen,
-    Test: TestScreen,
-  },
-  {
-    initialRouteName: "Home",
-    defaultNavigationOptions: {
-      title: "eureka",
-    },
-  }
-);
-
-export default createAppContainer(navigator);
-
-*/

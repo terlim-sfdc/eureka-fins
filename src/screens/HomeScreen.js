@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,13 +11,15 @@ import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
 import axios from "axios";
 
+import AppContext from "../components/AppContext";
+
 import { useFonts } from "expo-font";
 import { Surface } from "react-native-paper";
 
 var sharePrice = require("share-price");
 
 // Import components and styles
-import HeaderText from "../components/HeaderTextWithAvatar";
+import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 import {
   container,
   headerWithoutSearch,
@@ -41,6 +43,8 @@ import Retail from "./SubScreens/Retail";
 import Investment from "./SubScreens/Investment";
 
 const HomeScreen = ({ navigation }) => {
+  const currentUserContext = useContext(AppContext);
+
   /* Set up state for search term */
   const [term, setTerm] = useState("");
 
@@ -70,10 +74,10 @@ const HomeScreen = ({ navigation }) => {
     const greeting = "";
     const hourOfDay = new Date().getHours();
     if (hourOfDay >= 18) {
-      return "Evening, Terence";
+      return "Evening, " + currentUserContext.user;
     } else if (hourOfDay >= 12) {
-      return "Afternoon, Terence";
-    } else return "Morning, Terence";
+      return "Afternoon, " + currentUserContext.user;
+    } else return "Morning, " + currentUserContext.user;
   };
 
   const updateSharePrice = (ticker) => {
@@ -148,7 +152,11 @@ const HomeScreen = ({ navigation }) => {
         {/* Header */}
         <View style={headerWithoutSearch}>
           <View style={headerContainer}>
-            <HeaderText text={greetingOfTheDay()} navigation={navigation} />
+            <HeaderTextWithAvatar
+              text={greetingOfTheDay()}
+              navigation={navigation}
+              currentUserContext={currentUserContext}
+            />
           </View>
         </View>
 

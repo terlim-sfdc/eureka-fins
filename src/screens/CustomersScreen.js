@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -56,11 +56,14 @@ import {
   sectionSubHeadingText,
   summaryBoxSubContentContainer,
 } from "../styles";
-import HeaderText from "../components/HeaderTextWithAvatar";
+import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
+import AppContext from "../components/AppContext";
 
 /* Customer Detail Screen */
 
 const CustomersScreen = ({ route, navigation }) => {
+  const currentUserContext = useContext(AppContext);
+
   const [JwtToken, setJwtToken] = useState("");
 
   const customer_dashboard_url =
@@ -120,7 +123,11 @@ const CustomersScreen = ({ route, navigation }) => {
         {/* Header */}
         <View style={headerWithoutSearch}>
           <View style={headerContainer}>
-            <HeaderText text="Customers" navigation={navigation} />
+            <HeaderTextWithAvatar
+              text="Customers"
+              navigation={navigation}
+              currentUserContext={currentUserContext}
+            />
           </View>
         </View>
 

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Touchable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/colors/colors";
-import profile from "../../assets/images/terence-avatar.jpeg";
+import terenceProfilePic from "../../assets/images/terence-avatar.jpeg";
+import vivekProfilePic from "../../assets/images/vivek-avatar.jpeg";
 
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
 
@@ -12,6 +13,19 @@ const HeaderTextWithAvatar = (props) => {
   const hideMenu = () => setVisible(false);
 
   const showMenu = () => setVisible(true);
+
+  const getProfilePic = () => {
+    switch (props.currentUserContext.user) {
+      case "Terence":
+        return terenceProfilePic;
+        break;
+      case "Vivek":
+        return vivekProfilePic;
+        break;
+      default:
+        return terenceProfilePic;
+    }
+  };
 
   return (
     <View style={styles.headerTextContainer}>
@@ -41,16 +55,30 @@ const HeaderTextWithAvatar = (props) => {
           visible={visible}
           anchor={
             <TouchableOpacity onPress={showMenu}>
-              <Image source={profile} style={styles.profileImage} />
+              <Image source={getProfilePic()} style={styles.profileImage} />
             </TouchableOpacity>
           }
           onRequestClose={hideMenu}
         >
-          <MenuItem onPress={hideMenu}>Terence Lim</MenuItem>
-          <MenuItem onPress={hideMenu}>Jisoo Kim</MenuItem>
+          <MenuItem
+            onPress={() => {
+              hideMenu();
+              props.currentUserContext.setUser("Terence");
+            }}
+          >
+            Terence Lim
+          </MenuItem>
+
           {/* <MenuItem disabled>Disabled item</MenuItem>
           <MenuDivider /> */}
-          <MenuItem onPress={hideMenu}>Vivek Mahapatra</MenuItem>
+          <MenuItem
+            onPress={() => {
+              hideMenu();
+              props.currentUserContext.setUser("Vivek");
+            }}
+          >
+            Vivek Mahapatra
+          </MenuItem>
         </Menu>
       </View>
     </View>
