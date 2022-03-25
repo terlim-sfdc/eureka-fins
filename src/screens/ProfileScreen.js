@@ -16,6 +16,7 @@ import { Button } from "react-native-ios-kit";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/colors/colors";
 
+
 // Import components and styles
 import HeaderTextWithoutAvatar from "../components/HeaderTextWithoutAvatar";
 import {

@@ -166,7 +166,7 @@ const HomeScreen = ({ navigation }) => {
               </Text>
               <View style={summaryBoxSubContentContainer}>
                 <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +183{" "}
+                  +17{" "}
                 </Text>
                 <Text style={summaryBoxSubContent}>from last month</Text>
               </View>
@@ -176,7 +176,7 @@ const HomeScreen = ({ navigation }) => {
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Profit per customer</Text>
               </View>
-              <Text style={summaryBoxContent}>1,500</Text>
+              <Text style={summaryBoxContent}>US$530</Text>
 
               <View style={summaryBoxSubContentContainer}>
                 <Text style={[summaryBoxSubContent, { color: colors.green }]}>
@@ -194,7 +194,7 @@ const HomeScreen = ({ navigation }) => {
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Revenue</Text>
               </View>
-              <Text style={summaryBoxContent}>84,028,384</Text>
+              <Text style={summaryBoxContent}>US$84,028</Text>
 
               <View style={summaryBoxSubContentContainer}>
                 <Text style={[summaryBoxSubContent, { color: colors.green }]}>
@@ -210,8 +210,8 @@ const HomeScreen = ({ navigation }) => {
               </View>
               <Text style={summaryBoxContent}>US$58,384</Text>
               <View style={summaryBoxSubContentContainer}>
-                <Text style={summaryBoxSubContent}>+1.2 </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text>
+                {/* <Text style={summaryBoxSubContent}>+1.2 </Text>
+                <Text style={summaryBoxSubContent}>from last month</Text> */}
               </View>
             </View>
           </View>
@@ -223,7 +223,7 @@ const HomeScreen = ({ navigation }) => {
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Expenses</Text>
               </View>
-              <Text style={summaryBoxContent}>54,393,492</Text>
+              <Text style={summaryBoxContent}>US$54,393</Text>
               <View style={summaryBoxSubContentContainer}>
                 <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
                   +1.2{" "}
@@ -241,7 +241,7 @@ const HomeScreen = ({ navigation }) => {
                 <View style={summaryBoxTitleBox}>
                   <Text style={summaryBoxTitle}>Stock price</Text>
                 </View>
-                <Text style={summaryBoxContent}>{stockPrice}</Text>
+                <Text style={summaryBoxContent}>US${stockPrice}</Text>
                 <View style={summaryBoxSubContentContainer}>
                   <Text style={[summaryBoxSubContent, { color: colors.green }]}>
                     Live Price{" "}
