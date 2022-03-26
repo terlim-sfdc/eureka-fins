@@ -303,7 +303,9 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* Show page based on button pressed and pass down customer prop */}
-        {page === "retail" && <Retail />}
+        {page === "retail" && (
+          <Retail currentUserContext={currentUserContext} />
+        )}
         {page === "commercial" && <Commercial />}
         {page === "investment" && <Investment />}
       </ScrollView>

@@ -13,14 +13,14 @@ import {
   connectedAppSecretId,
   connectedAppClientId,
   connectedAppSecretKey,
-  username,
-  tableauservername,
+  usernameMapping,
   js_api,
   uuidData,
 } from "../../../tableauConfig";
 
-const Retail = (props) => {
-  const [JwtToken, setJwtToken] = useState("");
+const Retail = ({ currentUserContext }) => {
+  const [JwtToken, setJwtToken] = useState(undefined);
+  const [htmlView, setHtmlView] = useState(undefined);
 
   const customer_dashboard_url =
     "https://10az.online.tableau.com/t/gsisg/views/Customers/Customers";
@@ -31,7 +31,8 @@ const Retail = (props) => {
     exp: moment.utc().add(3, "minutes").unix(), //exp: 1647244533,
     jti: uuidData,
     aud: "tableau",
-    sub: username,
+    // sub: usernameMapping[props.currentUserContext.user],
+    sub: "vkadervel@tableau.com",
     scp: ["tableau:views:embed"],
   };
   const headers = {
@@ -42,24 +43,31 @@ const Retail = (props) => {
     setJwtToken(sign(payload, connectedAppSecretKey, headers));
   };
 
-  // update jwt token when page loads
+  // update jwt token when page loads, and when current user is changed
   useEffect(() => {
     updateJwtToken();
-  }, []);
+  }, [currentUserContext.user]);
 
-  const htmlCode =
-    "<html><head>" +
-    "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
-    '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
-    "</head></html>";
+  useEffect(() => {
+    console.log(JwtToken);
+    const htmlCode =
+      "<html><head>" +
+      "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+      '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+      `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+      "</head></html>";
+    console.log(htmlCode);
+    setHtmlView(htmlCode);
+  }, [JwtToken]);
+
+  
 
   return (
     <View style={styles.container}>
       <WebView
         originWhitelist={["*"]}
         source={{
-          html: htmlCode,
+          html: htmlView,
         }}
       />
     </View>

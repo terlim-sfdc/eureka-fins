@@ -94,7 +94,7 @@ const linking = {
 
 const App = () => {
   //Global Variables for User Profile state
-  const [user, setUser] = useState("Terence");
+  const [user, setUser] = useState("Vivek");
 
   const globalUserSettings = {
     user: user,

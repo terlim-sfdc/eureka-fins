@@ -30,8 +30,7 @@ import {
   connectedAppSecretId,
   connectedAppClientId,
   connectedAppSecretKey,
-  username,
-  tableauservername,
+  usernameMapping,
   js_api,
   uuidData,
 } from "../../tableauConfig";
@@ -75,7 +74,7 @@ const CustomersScreen = ({ route, navigation }) => {
     exp: moment.utc().add(3, "minutes").unix(), //exp: 1647244533,
     jti: uuidData,
     aud: "tableau",
-    sub: username,
+    sub: usernameMapping[currentUserContext.user],
     scp: ["tableau:views:embed"],
   };
   const headers = {
@@ -89,14 +88,24 @@ const CustomersScreen = ({ route, navigation }) => {
   // update jwt token when page loads
   useEffect(() => {
     updateJwtToken();
-  }, []);
+  }, [currentUserContext.user]);
 
-  const htmlCode =
-    "<html><head>" +
-    "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
-    '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
-    "</head></html>";
+  useEffect(() => {
+    console.log(JwtToken);
+    const html =
+      "<html><head>" +
+      "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+      '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+      `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+      "</head></html>";
+  }, [JwtToken]);
+
+  // const htmlCode =
+  //   "<html><head>" +
+  //   "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+  //   '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+  //   `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+  //   "</head></html>";
 
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
