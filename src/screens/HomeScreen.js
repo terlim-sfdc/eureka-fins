@@ -10,6 +10,7 @@ import {
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
 import axios from "axios";
+import { users } from "../../usersConfig";
 
 import AppContext from "../components/AppContext";
 
@@ -45,9 +46,6 @@ import Investment from "./SubScreens/Investment";
 const HomeScreen = ({ navigation }) => {
   const currentUserContext = useContext(AppContext);
 
-  /* Set up state for search term */
-  const [term, setTerm] = useState("");
-
   const [isLoadingTotalCustomers, setIsLoadingTotalCustomers] = useState(false);
 
   const [customers, setCustomers] = useState([]);
@@ -74,10 +72,10 @@ const HomeScreen = ({ navigation }) => {
     const greeting = "";
     const hourOfDay = new Date().getHours();
     if (hourOfDay >= 18) {
-      return "Evening, " + currentUserContext.user;
+      return "Evening, " + users[currentUserContext.user].firstName;
     } else if (hourOfDay >= 12) {
-      return "Afternoon, " + currentUserContext.user;
-    } else return "Morning, " + currentUserContext.user;
+      return "Afternoon, " + users[currentUserContext.user].firstName;
+    } else return "Morning, " + users[currentUserContext.user].firstName;
   };
 
   const updateSharePrice = (ticker) => {
@@ -128,13 +126,12 @@ const HomeScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  // refreshes every 3 secs and calls updateSharePrice
+  //refreshes every 3 secs and calls updateSharePrice
   const refreshInterval = 3000;
   useEffect(() => {
     const interval = setInterval(() => {
       updateSharePrice("CRM");
     }, refreshInterval);
-
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, []);
 
@@ -153,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={headerWithoutSearch}>
           <View style={headerContainer}>
             <HeaderTextWithAvatar
-              text={greetingOfTheDay()}
+              headerText={greetingOfTheDay()}
               navigation={navigation}
               currentUserContext={currentUserContext}
             />

@@ -20,6 +20,7 @@ import ProfileScreen from "./src/Screens/ProfileScreen";
 import AboutScreen from "./src/Screens/AboutScreen";
 
 import AppContext from "./src/components/AppContext";
+import { defaultUser } from "./usersConfig";
 
 import { useFonts } from "expo-font";
 
@@ -93,9 +94,10 @@ const linking = {
 };
 
 const App = () => {
-  //Global Variables for User Profile state
-  const [user, setUser] = useState("Vivek");
+  // Global Variables for User Profile state, load default user from usersConfig file
+  const [user, setUser] = useState(defaultUser);
 
+  // this will set the currentUserContext across the screens
   const globalUserSettings = {
     user: user,
     setUser: setUser,

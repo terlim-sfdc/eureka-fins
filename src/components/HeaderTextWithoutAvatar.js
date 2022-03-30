@@ -28,7 +28,7 @@ const HeaderTextWithoutAvatar = (props) => {
             marginLeft: 10,
           }}
         >
-          {props.text}
+          {props.headerText}
         </Text>
       </View>
     </View>

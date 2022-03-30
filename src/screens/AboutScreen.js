@@ -57,7 +57,7 @@ const AboutScreen = ({ route, navigation }) => {
         <View style={headerWithoutSearch}>
           <View style={headerContainer}>
             <HeaderTextWithAvatar
-              text="About"
+              headerText="About"
               navigation={navigation}
               currentUserContext={currentUserContext}
             />

@@ -11,6 +11,9 @@ import {
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
+import uuid from "react-native-uuid";
+
+import { users } from "../../usersConfig";
 
 import { Surface, useTheme } from "react-native-paper";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -72,9 +75,9 @@ const CustomersScreen = ({ route, navigation }) => {
   const payload = {
     iss: connectedAppClientId,
     exp: moment.utc().add(3, "minutes").unix(), //exp: 1647244533,
-    jti: uuidData,
+    jti: uuid.v4(),
     aud: "tableau",
-    sub: usernameMapping[currentUserContext.user],
+    sub: users[currentUserContext.user].email,
     scp: ["tableau:views:embed"],
   };
   const headers = {
@@ -90,22 +93,12 @@ const CustomersScreen = ({ route, navigation }) => {
     updateJwtToken();
   }, [currentUserContext.user]);
 
-  useEffect(() => {
-    console.log(JwtToken);
-    const html =
-      "<html><head>" +
-      "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
-      '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-      `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
-      "</head></html>";
-  }, [JwtToken]);
-
-  // const htmlCode =
-  //   "<html><head>" +
-  //   "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
-  //   '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-  //   `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
-  //   "</head></html>";
+  const htmlCode =
+    "<html><head>" +
+    "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+    '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+    "</head></html>";
 
   if (Platform.OS == "ios") {
     StatusBar.setBarStyle("light-content", true);
@@ -133,7 +126,7 @@ const CustomersScreen = ({ route, navigation }) => {
         <View style={headerWithoutSearch}>
           <View style={headerContainer}>
             <HeaderTextWithAvatar
-              text="Customers"
+              headerText="Customers"
               navigation={navigation}
               currentUserContext={currentUserContext}
             />

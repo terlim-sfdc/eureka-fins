@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button, Alert } from "react-native";
 import { WebView } from "react-native-webview";
+import uuid from "react-native-uuid";
+import { users } from "../../../usersConfig";
 
 // moment library to manage time
 const moment = require("moment");
@@ -13,14 +15,10 @@ import {
   connectedAppSecretId,
   connectedAppClientId,
   connectedAppSecretKey,
-  usernameMapping,
-  js_api,
-  uuidData,
 } from "../../../tableauConfig";
 
 const Retail = ({ currentUserContext }) => {
   const [JwtToken, setJwtToken] = useState(undefined);
-  const [htmlView, setHtmlView] = useState(undefined);
 
   const customer_dashboard_url =
     "https://10az.online.tableau.com/t/gsisg/views/Customers/Customers";
@@ -29,12 +27,12 @@ const Retail = ({ currentUserContext }) => {
   const payload = {
     iss: connectedAppClientId,
     exp: moment.utc().add(3, "minutes").unix(), //exp: 1647244533,
-    jti: uuidData,
+    jti: uuid.v4(),
     aud: "tableau",
-    // sub: usernameMapping[props.currentUserContext.user],
-    sub: "vkadervel@tableau.com",
+    sub: users[currentUserContext.user].email,
     scp: ["tableau:views:embed"],
   };
+
   const headers = {
     kid: connectedAppSecretId,
     iss: connectedAppClientId,
@@ -48,27 +46,25 @@ const Retail = ({ currentUserContext }) => {
     updateJwtToken();
   }, [currentUserContext.user]);
 
-  useEffect(() => {
-    console.log(JwtToken);
-    const htmlCode =
-      "<html><head>" +
-      "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
-      '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-      `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
-      "</head></html>";
-    console.log(htmlCode);
-    setHtmlView(htmlCode);
-  }, [JwtToken]);
+  // useEffect(() => {
+  //   console.log(JwtToken);
+  // }, [JwtToken]);
 
-  
+  let htmlCode =
+    "<html><head>" +
+    "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
+    '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
+    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+    "</head></html>";
 
   return (
     <View style={styles.container}>
       <WebView
         originWhitelist={["*"]}
         source={{
-          html: htmlView,
+          html: htmlCode,
         }}
+        cacheEnabled={false}
       />
     </View>
   );

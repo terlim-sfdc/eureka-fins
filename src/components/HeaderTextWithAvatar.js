@@ -2,30 +2,19 @@ import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Touchable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/colors/colors";
-import terenceProfilePic from "../../assets/images/terence-avatar.jpeg";
-import vivekProfilePic from "../../assets/images/vivek-avatar.jpeg";
+
+import { users } from "../../usersConfig";
 
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
 
-const HeaderTextWithAvatar = (props) => {
+const HeaderTextWithAvatar = ({ headerText, currentUserContext }) => {
   const [visible, setVisible] = useState(false);
 
   const hideMenu = () => setVisible(false);
 
   const showMenu = () => setVisible(true);
 
-  const getProfilePic = () => {
-    switch (props.currentUserContext.user) {
-      case "Terence":
-        return terenceProfilePic;
-        break;
-      case "Vivek":
-        return vivekProfilePic;
-        break;
-      default:
-        return terenceProfilePic;
-    }
-  };
+  const currentUserObject = users[currentUserContext.user];
 
   return (
     <View style={styles.headerTextContainer}>
@@ -36,10 +25,10 @@ const HeaderTextWithAvatar = (props) => {
           fontFamily: "ProximaNovaBold",
         }}
       >
-        {props.text}
+        {headerText}
       </Text>
       {/* <TouchableOpacity
-        onPress={() => props.navigation.navigate("ProfileScreen")}
+        onPress={() => navigation.navigate("ProfileScreen")}
       >
         <Image source={profile} style={styles.profileImage} />
       </TouchableOpacity> */}
@@ -55,30 +44,60 @@ const HeaderTextWithAvatar = (props) => {
           visible={visible}
           anchor={
             <TouchableOpacity onPress={showMenu}>
-              <Image source={getProfilePic()} style={styles.profileImage} />
+              <Image
+                source={currentUserObject.image}
+                style={styles.profileImage}
+              />
             </TouchableOpacity>
           }
           onRequestClose={hideMenu}
         >
+          {/* // current user */}
           <MenuItem
+            disabled
             onPress={() => {
               hideMenu();
-              props.currentUserContext.setUser("Terence");
+              currentUserContext.setUser("terence");
             }}
           >
-            Terence Lim
+            {currentUserObject.firstName + " " + currentUserObject.lastName}
           </MenuItem>
-
-          {/* <MenuItem disabled>Disabled item</MenuItem>
-          <MenuDivider /> */}
-          <MenuItem
+          <MenuDivider />
+          {/* // Loops through all users and load button */}
+          {Object.entries(users).map(([key, userObject]) => (
+            <MenuItem
+              onPress={() => {
+                hideMenu();
+                currentUserContext.setUser(key);
+              }}
+            >
+              {userObject.firstName + " " + userObject.lastName}
+            </MenuItem>
+          ))}
+          {/* <MenuItem
             onPress={() => {
               hideMenu();
-              props.currentUserContext.setUser("Vivek");
+              currentUserContext.setUser("vivek");
             }}
           >
             Vivek Mahapatra
           </MenuItem>
+          <MenuItem
+            onPress={() => {
+              hideMenu();
+              currentUserContext.setUser("vijay");
+            }}
+          >
+            Vijay Kadervel
+          </MenuItem>
+          <MenuItem
+            onPress={() => {
+              hideMenu();
+              currentUserContext.setUser("tom");
+            }}
+          >
+            Tom Merrit
+          </MenuItem> */}
         </Menu>
       </View>
     </View>

@@ -32,6 +32,7 @@
     "react-native": "0.64.2",
     "react-native-animated-pagination-dots": "^0.1.72",
     "react-native-chart-kit": "^6.11.0",
+    "react-native-cookies": "^3.3.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-ios-kit": "^0.0.22",
     "react-native-linear-gradient": "^2.5.6",
