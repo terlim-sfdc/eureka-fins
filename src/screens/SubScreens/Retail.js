@@ -23,6 +23,9 @@ const Retail = ({ currentUserContext }) => {
   const customer_dashboard_url =
     "https://10az.online.tableau.com/t/gsisg/views/Customers/Customers";
 
+  // const customer_dashboard_url =
+  //   "https://10az.online.tableau.com/#/site/gsisg/views/InternalAudit/DepartmentAnalysis";
+
   // setting up JWT details and signing token
   const payload = {
     iss: connectedAppClientId,
@@ -54,17 +57,17 @@ const Retail = ({ currentUserContext }) => {
     "<html><head>" +
     "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
     '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" iframeSizedToWindow="true" token="${JwtToken}"></tableau-viz></body>` +
+    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" token="${JwtToken}" device="phone" height="1100"></tableau-viz></body>` +
     "</head></html>";
 
   return (
     <View style={styles.container}>
       <WebView
+        style={styles.webview}
         originWhitelist={["*"]}
         source={{
           html: htmlCode,
         }}
-        cacheEnabled={false}
       />
     </View>
   );

@@ -53,51 +53,24 @@ const HeaderTextWithAvatar = ({ headerText, currentUserContext }) => {
           onRequestClose={hideMenu}
         >
           {/* // current user */}
-          <MenuItem
-            disabled
-            onPress={() => {
-              hideMenu();
-              currentUserContext.setUser("terence");
-            }}
-          >
+          <MenuItem disabled>
             {currentUserObject.firstName + " " + currentUserObject.lastName}
           </MenuItem>
           <MenuDivider />
-          {/* // Loops through all users and load button */}
-          {Object.entries(users).map(([key, userObject]) => (
-            <MenuItem
-              onPress={() => {
-                hideMenu();
-                currentUserContext.setUser(key);
-              }}
-            >
-              {userObject.firstName + " " + userObject.lastName}
-            </MenuItem>
-          ))}
-          {/* <MenuItem
-            onPress={() => {
-              hideMenu();
-              currentUserContext.setUser("vivek");
-            }}
-          >
-            Vivek Mahapatra
-          </MenuItem>
-          <MenuItem
-            onPress={() => {
-              hideMenu();
-              currentUserContext.setUser("vijay");
-            }}
-          >
-            Vijay Kadervel
-          </MenuItem>
-          <MenuItem
-            onPress={() => {
-              hideMenu();
-              currentUserContext.setUser("tom");
-            }}
-          >
-            Tom Merrit
-          </MenuItem> */}
+          {/* // Loops through all users and load them as options */}
+          {Object.entries(users).map(([key, userObject]) =>
+            currentUserContext.user != key ? (
+              <MenuItem
+                key={key}
+                onPress={() => {
+                  hideMenu();
+                  currentUserContext.setUser(key);
+                }}
+              >
+                {userObject.firstName + " " + userObject.lastName}
+              </MenuItem>
+            ) : null
+          )}
         </Menu>
       </View>
     </View>
