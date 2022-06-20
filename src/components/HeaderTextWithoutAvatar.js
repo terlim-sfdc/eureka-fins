@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, Image, StyleSheet, Touchable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../assets/colors/colors";
-import profile from "../../assets/images/tg-avatar.png";
+// import profile from "../../assets/images/tg-avatar.png";
 import { prevPageLinkContentBox, prevPageLink } from "../styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 

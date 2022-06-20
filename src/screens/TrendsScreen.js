@@ -39,7 +39,7 @@ const CustomersScreen = ({ navigation }) => {
       <View style={headerWithoutSearch}>
         <View style={headerContainer}>
           <HeaderTextWithAvatar
-            text="Trends"
+            headerText="Trends"
             navigation={navigation}
             currentUserContext={currentUserContext}
           />

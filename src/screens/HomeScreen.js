@@ -6,6 +6,9 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
+  Alert,
+  Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
@@ -116,6 +119,62 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  // create zoom meeting
+  const createZoomMeeting = async () => {
+    var data = JSON.stringify({
+      agenda: "Expenses Meeting - Mobile",
+      default_password: false,
+      duration: 60,
+      password: "123456",
+      pre_schedule: false,
+      start_time: "2022-06-10T05:30:00Z",
+      template_id: "Dv4YdINdTk+Z5RToadh5ug==",
+      timezone: "Asia/Singapore",
+      topic: "Expenses Meeting - Mobile",
+      tracking_fields: [
+        {
+          field: "field1",
+          value: "value1",
+        },
+      ],
+      type: 2,
+    });
+
+    var config = {
+      method: "post",
+      url: "https://api.zoom.us/v2/users/me/meetings",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Il9ibHVLNXFsUWZlSTBsdHlmc1VXZmciLCJleHAiOjE2NTU0MzU4MDAsImlhdCI6MTY1NDgzMTAwMH0.orKKo21DL8Ju1t04lTKtzPRDF4JPBEiy95ewsQk_jA0",
+        Cookie:
+          "TS018dd1ba=01b2081ea5bdf03a45d0a4ef815c45fb0a6cc398cd9937d35b57550befc9bece058d430fe2b6f540711f145e34fe6b13baee27030b; _zm_mtk_guid=35f9d7553a94414d9733e6dc72c3a85e; TS01f92dc5=01b2081ea5bdf03a45d0a4ef815c45fb0a6cc398cd9937d35b57550befc9bece058d430fe2b6f540711f145e34fe6b13baee27030b; cred=044A4501ED82BAC1F279779F624501D2",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    Alert.alert(
+      "Expense Meeting Created",
+      "Meeting will commence in an hour for 60 mins",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]
+    );
+  };
+
   // https://reactnavigation.org/docs/function-after-focusing-screen/
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -161,34 +220,63 @@ const HomeScreen = ({ navigation }) => {
         <Surface style={summaryOverallBox}>
           <View style={summaryBoxRow}>
             <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Total Customers</Text>
-              </View>
-              <Text style={summaryBoxContent}>
-                {isLoadingTotalCustomers === true
-                  ? "Loading..."
-                  : customers.length}
-              </Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +17{" "}
+              <TouchableOpacity
+                onPress={() => {
+                  updateTotalCustomers();
+                }}
+              >
+                <View style={summaryBoxTitleBox}>
+                  <Text style={summaryBoxTitle}>Total Customers</Text>
+                </View>
+                <Text style={summaryBoxContent}>
+                  {isLoadingTotalCustomers === true ? (
+                    <ActivityIndicator
+                      size={"small"}
+                      style={styles.activityIndicator}
+                      color={colors.theme}
+                    />
+                  ) : (
+                    customers.length * 100
+                  )}
                 </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text>
-              </View>
+
+                {isLoadingTotalCustomers != true && (
+                  <View style={summaryBoxSubContentContainer}>
+                    <Text
+                      style={[summaryBoxSubContent, { color: colors.green }]}
+                    >
+                      +17
+                    </Text>
+                    <Text style={summaryBoxSubContent}> from last month</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
             </View>
             <View style={verticleLine}></View>
             <View>
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Profit per customer</Text>
               </View>
-              <Text style={summaryBoxContent}>US$530</Text>
+              <Text style={summaryBoxContent}>
+                {isLoadingTotalCustomers === true ? (
+                  <ActivityIndicator
+                    size={"small"}
+                    style={styles.activityIndicator}
+                    color={colors.theme}
+                  />
+                ) : (
+                  "US$530"
+                )}
+              </Text>
 
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +0.35{" "}
-                </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text>
-              </View>
+              {isLoadingTotalCustomers != true && (
+                <View style={summaryBoxSubContentContainer}>
+                  <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                    +0.35{" "}
+                  </Text>
+                  <Text style={summaryBoxSubContent}>from last month</Text>
+                </View>
+              )}
             </View>
           </View>
 
@@ -199,21 +287,42 @@ const HomeScreen = ({ navigation }) => {
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Revenue</Text>
               </View>
-              <Text style={summaryBoxContent}>US$84,028</Text>
-
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +5.3{" "}
-                </Text>
-                <Text style={summaryBoxSubContent}>per month</Text>
-              </View>
+              <Text style={summaryBoxContent}>
+                {isLoadingTotalCustomers === true ? (
+                  <ActivityIndicator
+                    size={"small"}
+                    style={styles.activityIndicator}
+                    color={colors.theme}
+                  />
+                ) : (
+                  "US$84,028"
+                )}
+              </Text>
+              {isLoadingTotalCustomers != true && (
+                <View style={summaryBoxSubContentContainer}>
+                  <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                    +5.3{" "}
+                  </Text>
+                  <Text style={summaryBoxSubContent}>per month</Text>
+                </View>
+              )}
             </View>
             <View style={verticleLine}></View>
             <View>
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Progress to target</Text>
               </View>
-              <Text style={summaryBoxContent}>US$58,384</Text>
+              <Text style={summaryBoxContent}>
+                {isLoadingTotalCustomers === true ? (
+                  <ActivityIndicator
+                    size={"small"}
+                    style={styles.activityIndicator}
+                    color={colors.theme}
+                  />
+                ) : (
+                  "US$58,384"
+                )}
+              </Text>
               <View style={summaryBoxSubContentContainer}>
                 {/* <Text style={summaryBoxSubContent}>+1.2 </Text>
                 <Text style={summaryBoxSubContent}>from last month</Text> */}
@@ -225,16 +334,36 @@ const HomeScreen = ({ navigation }) => {
 
           <View style={summaryBoxRow}>
             <View>
+              {/* <TouchableOpacity
+                onPress={() => {
+                  createZoomMeeting();
+                }}
+              > */}
               <View style={summaryBoxTitleBox}>
                 <Text style={summaryBoxTitle}>Expenses</Text>
               </View>
-              <Text style={summaryBoxContent}>US$54,393</Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
-                  +1.2{" "}
-                </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text>
-              </View>
+              <Text style={summaryBoxContent}>
+                {isLoadingTotalCustomers === true ? (
+                  <ActivityIndicator
+                    size={"small"}
+                    style={styles.activityIndicator}
+                    color={colors.theme}
+                  />
+                ) : (
+                  "US$54,393"
+                )}
+              </Text>
+              {isLoadingTotalCustomers != true && (
+                <View style={summaryBoxSubContentContainer}>
+                  <Text
+                    style={[summaryBoxSubContent, { color: colors.orange }]}
+                  >
+                    +1.2{" "}
+                  </Text>
+                  <Text style={summaryBoxSubContent}>from last month</Text>
+                </View>
+              )}
+              {/* </TouchableOpacity> */}
             </View>
             <View style={verticleLine}></View>
             <View>
@@ -246,12 +375,26 @@ const HomeScreen = ({ navigation }) => {
                 <View style={summaryBoxTitleBox}>
                   <Text style={summaryBoxTitle}>Stock price</Text>
                 </View>
-                <Text style={summaryBoxContent}>US${stockPrice}</Text>
-                <View style={summaryBoxSubContentContainer}>
-                  <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                    Live Price{" "}
-                  </Text>
-                </View>
+                <Text style={summaryBoxContent}>
+                  {isLoadingTotalCustomers === true ? (
+                    <ActivityIndicator
+                      size={"small"}
+                      style={styles.activityIndicator}
+                      color={colors.theme}
+                    />
+                  ) : (
+                    "US$" + stockPrice
+                  )}
+                </Text>
+                {isLoadingTotalCustomers != true && (
+                  <View style={summaryBoxSubContentContainer}>
+                    <Text
+                      style={[summaryBoxSubContent, { color: colors.green }]}
+                    >
+                      Live Price
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -303,12 +446,23 @@ const HomeScreen = ({ navigation }) => {
         {page === "retail" && (
           <Retail currentUserContext={currentUserContext} />
         )}
-        {page === "commercial" && <Commercial />}
-        {page === "investment" && <Investment />}
+        {page === "commercial" && (
+          <Commercial currentUserContext={currentUserContext} />
+        )}
+        {page === "investment" && (
+          <Investment currentUserContext={currentUserContext} />
+        )}
       </ScrollView>
     );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  activityIndicator: {
+    width: (Dimensions.get("window").width / 2) * 0.85,
+    height: 60,
+    alignContent: "center",
+    alignSelf: "center",
+  },
+});
 
 export default HomeScreen;

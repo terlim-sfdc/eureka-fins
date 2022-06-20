@@ -69,7 +69,7 @@ const CustomersScreen = ({ route, navigation }) => {
   const [JwtToken, setJwtToken] = useState("");
 
   const customer_dashboard_url =
-    "https://10az.online.tableau.com/t/gsisg/views/Superstore/Customers";
+    "https://10az.online.tableau.com/t/gsisg/views/FIN_WM/TopCustomers";
 
   // setting up JWT details and signing token
   const payload = {
@@ -146,6 +146,7 @@ const CustomersScreen = ({ route, navigation }) => {
                 onPress={() =>
                   Linking.openURL(
                     "slack://channel?team=T01GST6QY0G&id=C0380CQDRNU"
+                    // "slack://channel?team=T031V83SWDV&id=C03K7C9RN22"
                   )
                 }
               >
@@ -195,7 +196,7 @@ const CustomersScreen = ({ route, navigation }) => {
             <View style={verticleLine}></View>
             <View>
               <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Complains/Problems</Text>
+                <Text style={summaryBoxTitle}>Complaints</Text>
               </View>
               <Text style={summaryBoxContent}>439 cases</Text>
               <View style={summaryBoxSubContentContainer}>

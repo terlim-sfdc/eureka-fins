@@ -20,11 +20,11 @@ import {
 const Retail = ({ currentUserContext }) => {
   const [JwtToken, setJwtToken] = useState(undefined);
 
-  const customer_dashboard_url =
-    "https://10az.online.tableau.com/t/gsisg/views/Customers/Customers";
-
   // const customer_dashboard_url =
-  //   "https://10az.online.tableau.com/#/site/gsisg/views/InternalAudit/DepartmentAnalysis";
+  //   "https://10az.online.tableau.com/t/gsisg/views/FIN_WM/Askme";
+
+  const customer_dashboard_url =
+    "https://10az.online.tableau.com/#/site/gsisg/views/InternalAudit/DepartmentAnalysis";
 
   // setting up JWT details and signing token
   const payload = {
@@ -48,7 +48,7 @@ const Retail = ({ currentUserContext }) => {
   useEffect(() => {
     updateJwtToken();
   }, [currentUserContext.user]);
-
+  
   // useEffect(() => {
   //   console.log(JwtToken);
   // }, [JwtToken]);
@@ -66,7 +66,8 @@ const Retail = ({ currentUserContext }) => {
         style={styles.webview}
         originWhitelist={["*"]}
         source={{
-          html: htmlCode,
+          // html: htmlCode,
+          uri: "https://public.tableau.com/views/10_0SuperstoreSales/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
         }}
       />
     </View>

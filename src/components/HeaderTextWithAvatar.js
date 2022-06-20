@@ -27,11 +27,6 @@ const HeaderTextWithAvatar = ({ headerText, currentUserContext }) => {
       >
         {headerText}
       </Text>
-      {/* <TouchableOpacity
-        onPress={() => navigation.navigate("ProfileScreen")}
-      >
-        <Image source={profile} style={styles.profileImage} />
-      </TouchableOpacity> */}
 
       <View
         style={{

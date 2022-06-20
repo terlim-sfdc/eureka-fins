@@ -1,9 +1,17 @@
+import nancyProfilePic from "./assets/images/nancy-avatar.png";
 import terenceProfilePic from "./assets/images/terence-avatar.jpeg";
 import vivekProfilePic from "./assets/images/vivek-avatar.jpeg";
 import vijayProfilePic from "./assets/images/vijay-avatar.jpeg";
 import tomProfilePic from "./assets/images/tom-avatar.jpeg";
 
 export const users = {
+  nancy: {
+    firstName: "Nancy",
+    lastName: "Lim",
+    email: "vkadervel@tableau.com",
+    image: nancyProfilePic,
+    title: "CIO",
+  },
   terence: {
     firstName: "Terence",
     lastName: "Lim",
@@ -35,4 +43,4 @@ export const users = {
 };
 
 // input the users key
-export const defaultUser = "terence";
+export const defaultUser = "nancy";
