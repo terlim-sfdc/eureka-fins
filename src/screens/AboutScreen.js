@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,11 +9,15 @@ import {
   Linking,
   Image,
   Dimensions,
+  TextInput,
+  Alert,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
 import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import slackLogo from "../../assets/images/slack-logo.png";
 import eurekaFinsMap from "../../assets/images/eureka_fins_map.png";
@@ -27,6 +31,66 @@ import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 
 const AboutScreen = ({ route, navigation }) => {
   const currentUserContext = useContext(AppContext);
+
+  const [dashboardURLTextbox, setDashboardURLTextbox] = useState("");
+
+  const isValidUrl = (urlString) => {
+    var urlPattern = new RegExp(
+      "^(https?:\\/\\/)?" + // validate protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    ); // validate fragment locator
+    return !!urlPattern.test(urlString);
+  };
+
+  const updateDashboardURL = async () => {
+    try {
+      if (isValidUrl(dashboardURLTextbox)) {
+        await AsyncStorage.setItem("dashboardURL", dashboardURLTextbox);
+        Alert.alert("Dashboard for Home Screen Retail tab updated");
+        console.log(dashboardURLTextbox);
+      } else {
+        Alert.alert("URL is invalid. Please try again.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getDashboardURL = async () => {
+    try {
+      const loadedDashboardURL = await AsyncStorage.getItem("dashboardURL");
+      setDashboardURLTextbox(loadedDashboardURL);
+      console.log(loadedDashboardURL);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const restoreDefaultDashboardURL = async () => {
+    try {
+      setDashboardURLTextbox(
+        "https://public.tableau.com/views/10_0SuperstoreSales/Overview"
+      );
+
+      await AsyncStorage.setItem(
+        "dashboardURL",
+        "https://public.tableau.com/views/10_0SuperstoreSales/Overview"
+      );
+      Alert.alert("Dashboard for Home Screen Retail tab restored to default");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // update jwt token when page loads
+  useEffect(() => {
+    getDashboardURL();
+  }, []);
 
   let { screenWidth, screenHeight } = Dimensions.get("window");
 
@@ -90,10 +154,36 @@ const AboutScreen = ({ route, navigation }) => {
           <Text style={styles.content}>
             Conceptually, the data displayed within the app comes from API built
             using Mulesoft, which could potentially be residing on 3rd party
-            systems. The integrated dashboards are authenticated Tableau
-            Embedded dashboards, which can show different content based on the
-            user's profile.
+            systems or Salesforce, or even Heroku! The integrated dashboards are
+            authenticated Tableau Embedded dashboards, which can show different
+            content based on the user's profile.
           </Text>
+
+          <Text>
+            For demo purposes, you may change the embeded Tableau dashboard on
+            the Home Screen (Retail Tab) here:
+          </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setDashboardURLTextbox}
+            value={dashboardURLTextbox}
+            autoCorrect={false}
+            autoCapitalize={"none"}
+          />
+          <Button
+            mode="contained"
+            style={styles.updateURLButton}
+            onPress={() => updateDashboardURL()}
+          >
+            Update Dashboard URL
+          </Button>
+          <Button
+            mode="contained"
+            style={[styles.updateURLButton, { marginBottom: 25 }]}
+            onPress={() => restoreDefaultDashboardURL()}
+          >
+            Restore Default Dashboard URL
+          </Button>
 
           <Text style={styles.title}>Connect with the Eureka Team</Text>
 
@@ -245,6 +335,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    fontWeight: "bold",
   },
   content: {
     fontSize: 15,
@@ -263,6 +354,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  updateURLButton: {
+    borderWidth: 1,
+    borderRadius: 5,
+    height: 40,
+    margin: 3,
+  },
+  input: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 5,
   },
 });
 

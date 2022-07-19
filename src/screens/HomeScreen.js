@@ -127,7 +127,7 @@ const HomeScreen = ({ navigation }) => {
       duration: 60,
       password: "123456",
       pre_schedule: false,
-      start_time: "2022-06-10T05:30:00Z",
+      start_time: "2022-07-07T08:30:00Z",
       template_id: "Dv4YdINdTk+Z5RToadh5ug==",
       timezone: "Asia/Singapore",
       topic: "Expenses Meeting - Mobile",
@@ -140,6 +140,8 @@ const HomeScreen = ({ navigation }) => {
       type: 2,
     });
 
+    // https://marketplace.zoom.us/develop/apps/X41hU0PiQ-65DZ5alxCgNA/credentials
+    // replace the JWT token with the new one from the site above (developer.zoom.us API), see View JWT Token
     var config = {
       method: "post",
       url: "https://api.zoom.us/v2/users/me/meetings",
@@ -147,7 +149,7 @@ const HomeScreen = ({ navigation }) => {
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Il9ibHVLNXFsUWZlSTBsdHlmc1VXZmciLCJleHAiOjE2NTU0MzU4MDAsImlhdCI6MTY1NDgzMTAwMH0.orKKo21DL8Ju1t04lTKtzPRDF4JPBEiy95ewsQk_jA0",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Il9ibHVLNXFsUWZlSTBsdHlmc1VXZmciLCJleHAiOjE2NTc3NzI0MzEsImlhdCI6MTY1NzE2NzYzMX0.yFi9i-MuLSClfXUYdtzuFy08PMEFFExr_ob-uQK_HGg",
         Cookie:
           "TS018dd1ba=01b2081ea5bdf03a45d0a4ef815c45fb0a6cc398cd9937d35b57550befc9bece058d430fe2b6f540711f145e34fe6b13baee27030b; _zm_mtk_guid=35f9d7553a94414d9733e6dc72c3a85e; TS01f92dc5=01b2081ea5bdf03a45d0a4ef815c45fb0a6cc398cd9937d35b57550befc9bece058d430fe2b6f540711f145e34fe6b13baee27030b; cred=044A4501ED82BAC1F279779F624501D2",
       },
@@ -334,36 +336,36 @@ const HomeScreen = ({ navigation }) => {
 
           <View style={summaryBoxRow}>
             <View>
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => {
-                  createZoomMeeting();
+                  storeUser();
                 }}
-              > */}
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Expenses</Text>
-              </View>
-              <Text style={summaryBoxContent}>
-                {isLoadingTotalCustomers === true ? (
-                  <ActivityIndicator
-                    size={"small"}
-                    style={styles.activityIndicator}
-                    color={colors.theme}
-                  />
-                ) : (
-                  "US$54,393"
-                )}
-              </Text>
-              {isLoadingTotalCustomers != true && (
-                <View style={summaryBoxSubContentContainer}>
-                  <Text
-                    style={[summaryBoxSubContent, { color: colors.orange }]}
-                  >
-                    +1.2{" "}
-                  </Text>
-                  <Text style={summaryBoxSubContent}>from last month</Text>
+              >
+                <View style={summaryBoxTitleBox}>
+                  <Text style={summaryBoxTitle}>Expenses</Text>
                 </View>
-              )}
-              {/* </TouchableOpacity> */}
+                <Text style={summaryBoxContent}>
+                  {isLoadingTotalCustomers === true ? (
+                    <ActivityIndicator
+                      size={"small"}
+                      style={styles.activityIndicator}
+                      color={colors.theme}
+                    />
+                  ) : (
+                    "US$54,393"
+                  )}
+                </Text>
+                {isLoadingTotalCustomers != true && (
+                  <View style={summaryBoxSubContentContainer}>
+                    <Text
+                      style={[summaryBoxSubContent, { color: colors.orange }]}
+                    >
+                      +1.2{" "}
+                    </Text>
+                    <Text style={summaryBoxSubContent}>from last month</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
             </View>
             <View style={verticleLine}></View>
             <View>

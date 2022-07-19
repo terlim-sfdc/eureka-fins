@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Alert } from "react-native";
 import { WebView } from "react-native-webview";
 import uuid from "react-native-uuid";
 import { users } from "../../../usersConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // moment library to manage time
 const moment = require("moment");
@@ -20,11 +21,21 @@ import {
 const Retail = ({ currentUserContext }) => {
   const [JwtToken, setJwtToken] = useState(undefined);
 
+  const [customerDashboardURL, setCustomerDashboardURL] = useState(
+    "https://10az.online.tableau.com/#/site/gsisg/views/InternalAudit/DepartmentAnalysis"
+  );
+
   // const customer_dashboard_url =
   //   "https://10az.online.tableau.com/t/gsisg/views/FIN_WM/Askme";
 
-  const customer_dashboard_url =
-    "https://10az.online.tableau.com/#/site/gsisg/views/InternalAudit/DepartmentAnalysis";
+  const updateDashboardURL = async () => {
+    try {
+      const loadedDashboardURL = await AsyncStorage.getItem("dashboardURL");
+      setCustomerDashboardURL(loadedDashboardURL);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // setting up JWT details and signing token
   const payload = {
@@ -48,7 +59,13 @@ const Retail = ({ currentUserContext }) => {
   useEffect(() => {
     updateJwtToken();
   }, [currentUserContext.user]);
-  
+
+  // useEffect(() => {
+  //   getDashboardURL();
+  // }, []);
+
+  updateDashboardURL();
+
   // useEffect(() => {
   //   console.log(JwtToken);
   // }, [JwtToken]);
@@ -57,7 +74,7 @@ const Retail = ({ currentUserContext }) => {
     "<html><head>" +
     "<title>Welcome to Eureka Tableau Embeeded Integration Demo</title>" +
     '<script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.0.0.min.js"></script>' +
-    `<body><tableau-viz id="tableauViz" src=${customer_dashboard_url} toolbar="false" token="${JwtToken}" device="phone" height="1100"></tableau-viz></body>` +
+    `<body><tableau-viz id="tableauViz" src=${customerDashboardURL} toolbar="false" token="${JwtToken}" device="phone" height="1100"></tableau-viz></body>` +
     "</head></html>";
 
   return (
@@ -67,7 +84,10 @@ const Retail = ({ currentUserContext }) => {
         originWhitelist={["*"]}
         source={{
           // html: htmlCode,
-          uri: "https://public.tableau.com/views/10_0SuperstoreSales/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
+          // uri: "https://public.tableau.com/views/10_0SuperstoreSales/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
+          url:
+            customerDashboardURL +
+            "?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
         }}
       />
     </View>
