@@ -9,13 +9,14 @@ import {
   Linking,
   Image,
   Dimensions,
-  TextInput,
   Alert,
 } from "react-native";
 import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
 import { useFonts } from "expo-font";
 import { Button } from "react-native-paper";
+
+import { TextInput } from "react-native-paper";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -27,13 +28,23 @@ import AppContext from "../components/AppContext";
 import { container, headerWithoutSearch, headerContainer } from "../styles";
 import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 
-/* Actual Customer Detail Screen */
+import axios from "axios";
+
+// replace axiosConfig.sample with axiosConfig.js with your authentication hash and API URL
+import { apiURL, apiCallHeader, encryptedAuth } from "../../axiosConfig";
+
+/* All of the functions here are only relevant for Salesforce Solution Engineers
+   who use this app for demo purposes. 
+ */
 
 const AboutScreen = ({ route, navigation }) => {
   const currentUserContext = useContext(AppContext);
 
   const [dashboardURLTextbox, setDashboardURLTextbox] = useState("");
+  const [nameTextbox, setNameTextbox] = useState("");
+  const [customerTextbox, setCustomerTextbox] = useState("");
 
+  // validates if a URL is correct, for hot switching of Tableau visualizations
   const isValidUrl = (urlString) => {
     var urlPattern = new RegExp(
       "^(https?:\\/\\/)?" + // validate protocol
@@ -47,39 +58,90 @@ const AboutScreen = ({ route, navigation }) => {
     return !!urlPattern.test(urlString);
   };
 
-  const updateDashboardURL = async () => {
+  // logs hot switching requests of tableau viz to postgres
+  const logRequestOnPostgres = () => {
+    var axios = require("axios");
+    var qs = require("qs");
+    var data = qs.stringify({
+      name: nameTextbox,
+      customer: customerTextbox,
+      vizurl: dashboardURLTextbox,
+    });
+    var config = {
+      method: "post",
+      url: apiURL,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: encryptedAuth,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // submit change request to hot switch to a custom tableau visualization in retail tab on home screen
+  const submitChangeRequest = async () => {
     try {
-      if (isValidUrl(dashboardURLTextbox)) {
-        await AsyncStorage.setItem("dashboardURL", dashboardURLTextbox);
-        Alert.alert("Dashboard for Home Screen Retail tab updated");
+      if (nameTextbox == "") {
+        console.log(nameTextbox);
+        Alert.alert("Please enter your name");
+      } else if (customerTextbox == "") {
+        console.log(customerTextbox);
+        Alert.alert("Please enter a valid customer name");
+      } else if (
+        !isValidUrl(dashboardURLTextbox) ||
+        !dashboardURLTextbox.includes("tableau")
+      ) {
         console.log(dashboardURLTextbox);
+        Alert.alert("Please enter a valid Tableau Dashboard URL");
       } else {
-        Alert.alert("URL is invalid. Please try again.");
+        // all fields are checked and filled correctly
+        await AsyncStorage.setItem("dashboardURL", dashboardURLTextbox);
+        await AsyncStorage.setItem("customer", customerTextbox);
+        await AsyncStorage.setItem("name", nameTextbox);
+        logRequestOnPostgres();
+        Alert.alert(
+          "Change request accepted: Dashboard for Home Screen Retail Tab View updated"
+        );
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getDashboardURL = async () => {
+  // if user has submitted a hot switch of tableau visualiation before, loads the data from phone
+  const loadStoredData = async () => {
     try {
+      // only show name of SE/user when app is restarted
       const loadedDashboardURL = await AsyncStorage.getItem("dashboardURL");
-      setDashboardURLTextbox(loadedDashboardURL);
-      console.log(loadedDashboardURL);
+      const loadedName = await AsyncStorage.getItem("name");
+      const loadedcustomerName = await AsyncStorage.getItem("customer");
+      // setDashboardURLTextbox(loadedDashboardURL);
+      // setCustomerTextbox(loadedcustomerName);
+      setNameTextbox(loadedName);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // this function is called when user clicks on button to restore default tableau visualization
+  // default tableau viz is set here
   const restoreDefaultDashboardURL = async () => {
     try {
       setDashboardURLTextbox(
-        "https://public.tableau.com/views/10_0SuperstoreSales/Overview"
+        "https://demo.tableau.com/#/site/customapp/views/headcount/Headcount"
       );
 
       await AsyncStorage.setItem(
         "dashboardURL",
-        "https://public.tableau.com/views/10_0SuperstoreSales/Overview"
+        "https://demo.tableau.com/#/site/customapp/views/headcount/Headcount"
       );
       Alert.alert("Dashboard for Home Screen Retail tab restored to default");
     } catch (error) {
@@ -87,9 +149,8 @@ const AboutScreen = ({ route, navigation }) => {
     }
   };
 
-  // update jwt token when page loads
   useEffect(() => {
-    getDashboardURL();
+    loadStoredData();
   }, []);
 
   let { screenWidth, screenHeight } = Dimensions.get("window");
@@ -159,27 +220,54 @@ const AboutScreen = ({ route, navigation }) => {
             content based on the user's profile.
           </Text>
 
-          <Text>
-            For demo purposes, you may change the embeded Tableau dashboard on
-            the Home Screen (Retail Tab) here:
+          <Text style={{ marginBottom: 5 }}>
+            For demo purposes, you may change the embeded Tableau viz dashboard
+            on the Home Screen (Retail Tab) via this form:
           </Text>
+
           <TextInput
+            label="Your Name (SE/AE)"
+            onChangeText={setNameTextbox}
+            value={nameTextbox}
+            autoCorrect={false}
+            autoCapitalize={"words"}
+            mode="outlined"
             style={styles.input}
+          />
+
+          <TextInput
+            label="Which customer are you demoing this for?"
+            onChangeText={setCustomerTextbox}
+            value={customerTextbox}
+            autoCorrect={false}
+            autoCapitalize={"words"}
+            mode="outlined"
+            style={styles.input}
+          />
+
+          <TextInput
+            label="Tableau Viz Dashboard URL"
             onChangeText={setDashboardURLTextbox}
             value={dashboardURLTextbox}
             autoCorrect={false}
             autoCapitalize={"none"}
+            mode="outlined"
+            style={styles.input}
           />
+
           <Button
             mode="contained"
             style={styles.updateURLButton}
-            onPress={() => updateDashboardURL()}
+            onPress={() => submitChangeRequest()}
           >
-            Update Dashboard URL
+            Submit change request
           </Button>
           <Button
             mode="contained"
-            style={[styles.updateURLButton, { marginBottom: 25 }]}
+            style={[
+              styles.updateURLButton,
+              { marginBottom: 25, color: "#000000" },
+            ]}
             onPress={() => restoreDefaultDashboardURL()}
           >
             Restore Default Dashboard URL
@@ -359,13 +447,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     height: 40,
-    margin: 3,
+    margin: 5,
   },
   input: {
-    height: 40,
-    margin: 5,
-    borderWidth: 1,
-    padding: 5,
+    height: 50,
+    margin: 2,
+    borderWidth: 0,
+    padding: 1,
   },
 });
 

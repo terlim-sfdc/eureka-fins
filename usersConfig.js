@@ -4,6 +4,12 @@ import vivekProfilePic from "./assets/images/vivek-avatar.jpeg";
 import vijayProfilePic from "./assets/images/vijay-avatar.jpeg";
 import tomProfilePic from "./assets/images/tom-avatar.jpeg";
 
+/*
+These are sample fictitious users to demonstrate the capabilities of the app changing between user login states.
+The emails defined here are injected into the payload for Tableau embedded (see Investment.js as an example), 
+which authenticates the respective user to the Tableau embedded dashboards.
+*/
+
 export const users = {
   nancy: {
     firstName: "Nancy",

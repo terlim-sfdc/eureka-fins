@@ -1,0 +1,10 @@
+export const apiURL = `<YOUR URL HERE>`;
+
+// using basic auth generator https://www.blitter.se/utils/basic-authentication-header-generator/
+export const encryptedAuth = "<YOUR ENCRYPTED AUTH KEY HERE>";
+
+export const apiCallHeader = {
+  headers: {
+    Authorization: encryptedAuth,
+  },
+};

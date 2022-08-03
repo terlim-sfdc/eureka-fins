@@ -1,0 +1,14 @@
+import uuid from "react-native-uuid";
+
+// Global Tableau Config
+export const connectedAppSecretId = "<YOUR CONNECTED APP SECRET ID HERE>";
+export const connectedAppClientId = "<YOUR CONNECTED APP CLIENT ID HERE>";
+export const connectedAppSecretKey = "<YOUR CONNECTED APP SECRET KEY HERE>";
+export const js_api = "tableau.embedding.3.0.0.min.js";
+
+/* 
+
+For more details, check out the documentation here:
+https://developer.salesforce.com/blogs/2022/05/inside-a-react-native-mobile-app-with-tableau-embedded
+
+*/

@@ -107,6 +107,9 @@ const HomeScreen = ({ navigation }) => {
         setIsLoadingTotalCustomers(false);
         return;
       } else {
+        Alert.alert(
+          "Unable to load data... check network connection and reload app."
+        );
         throw new Error("Failed to fetch customers from Mulesoft API");
       }
     } catch (error) {
@@ -219,7 +222,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* Content Body */}
-        <Surface style={summaryOverallBox}>
+        <Surface style={[summaryOverallBox, { height: 200 }]}>
           <View style={summaryBoxRow}>
             <View>
               <TouchableOpacity
@@ -282,7 +285,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={horizontalLine} />
+          {/* <View style={horizontalLine} />
 
           <View style={summaryBoxRow}>
             <View>
@@ -326,11 +329,11 @@ const HomeScreen = ({ navigation }) => {
                 )}
               </Text>
               <View style={summaryBoxSubContentContainer}>
-                {/* <Text style={summaryBoxSubContent}>+1.2 </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text> */}
+                <Text style={summaryBoxSubContent}>+1.2 </Text>
+                <Text style={summaryBoxSubContent}>from last month</Text>
               </View>
             </View>
-          </View>
+          </View> */}
 
           <View style={horizontalLine} />
 

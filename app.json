@@ -2,7 +2,7 @@
   "expo": {
     "name": "Eureka Finance",
     "slug": "eureka-fins",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/eureka-fins-logo.png",
     "splash": {

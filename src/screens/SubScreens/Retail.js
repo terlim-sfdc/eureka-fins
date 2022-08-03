@@ -22,7 +22,7 @@ const Retail = ({ currentUserContext }) => {
   const [JwtToken, setJwtToken] = useState(undefined);
 
   const [customerDashboardURL, setCustomerDashboardURL] = useState(
-    "https://10az.online.tableau.com/#/site/gsisg/views/InternalAudit/DepartmentAnalysis"
+    "https://demo.tableau.com/#/site/customapp/views/headcount/Headcount"
   );
 
   // const customer_dashboard_url =
@@ -84,7 +84,7 @@ const Retail = ({ currentUserContext }) => {
         originWhitelist={["*"]}
         source={{
           // html: htmlCode,
-          // uri: "https://public.tableau.com/views/10_0SuperstoreSales/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
+          // uri: "https://demo.tableau.com/t/customapp/views/Superstore/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
           url:
             customerDashboardURL +
             "?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",

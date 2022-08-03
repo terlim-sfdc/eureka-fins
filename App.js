@@ -96,10 +96,10 @@ const linking = {
 };
 
 const App = () => {
-  // Global Variables for User Profile state, load default user from usersConfig file
+  // Global Variables for User Profile state, loads default user from usersConfig.js file
   const [user, setUser] = useState(defaultUser);
 
-  // this will set the currentUserContext across the screens
+  // This will set the currentUserContext across the screens globally
   const globalUserSettings = {
     user: user,
     setUser: setUser,
@@ -111,7 +111,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    // Hides native splash screen after 1s
+    // Hides native splash screen after designated time
     setTimeout(async () => {
       await SplashScreen.hideAsync();
     }, 300);
