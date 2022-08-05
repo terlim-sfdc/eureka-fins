@@ -22,7 +22,6 @@ import {
   verticleLine,
   horizontalLine,
 } from "../styles";
-import { color } from "react-native-reanimated";
 import AppContext from "../components/AppContext";
 
 const CustomersScreen = ({ navigation }) => {

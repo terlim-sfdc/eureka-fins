@@ -6,8 +6,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as SplashScreen from "expo-splash-screen";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -24,7 +22,7 @@ import AboutScreen from "./src/Screens/AboutScreen";
 import AppContext from "./src/components/AppContext";
 import { defaultUser } from "./usersConfig";
 
-import { useFonts } from "expo-font";
+import * as Font from "expo-font";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,7 +58,7 @@ const TabNavigator = () => {
         component={CustomersScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="face" size={32} color={color} />
+            <MaterialCommunityIcons name="face-man" size={32} color={color} />
           ),
         }}
       />
@@ -99,16 +97,27 @@ const App = () => {
   // Global Variables for User Profile state, loads default user from usersConfig.js file
   const [user, setUser] = useState(defaultUser);
 
+  const [fontLoaded, setFontLoaded] = useState(false);
+
   // This will set the currentUserContext across the screens globally
   const globalUserSettings = {
     user: user,
     setUser: setUser,
   };
 
-  let [fontsLoaded] = useFonts({
-    ProximaNova: require("./assets/fonts/Proxima-Nova.otf"),
-    ProximaNovaBold: require("./assets/fonts/Proxima-Nova-Bold.otf"),
-  });
+  // load fonts
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Promise.all([
+        Font.loadAsync({
+          ProximaNova: require("./assets/fonts/Proxima-Nova.otf"),
+          ProximaNovaBold: require("./assets/fonts/Proxima-Nova-Bold.otf"),
+        }),
+      ]);
+      setFontLoaded(true);
+    };
+    loadFonts();
+  }, []);
 
   useEffect(() => {
     // Hides native splash screen after designated time
@@ -117,6 +126,9 @@ const App = () => {
     }, 300);
   }, []);
 
+  if (!fontLoaded) {
+    return null;
+  }
   return (
     <AppContext.Provider value={globalUserSettings}>
       <NavigationContainer>

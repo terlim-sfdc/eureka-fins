@@ -10,12 +10,13 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
 import axios from "axios";
 import { users } from "../../usersConfig";
 
 import AppContext from "../components/AppContext";
+
+import * as SplashScreen from "expo-splash-screen";
 
 import { useFonts } from "expo-font";
 import { Surface } from "react-native-paper";
@@ -45,6 +46,9 @@ import {
 import Commercial from "./SubScreens/Commercial";
 import Retail from "./SubScreens/Retail";
 import Investment from "./SubScreens/Investment";
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 const HomeScreen = ({ navigation }) => {
   const currentUserContext = useContext(AppContext);
@@ -199,68 +203,39 @@ const HomeScreen = ({ navigation }) => {
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, []);
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else
-    return (
-      // Overall Container Wrapper
-      <ScrollView
-        style={container}
-        showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
-        bounces={false}
-      >
-        {/* Header */}
-        <View style={headerWithoutSearch}>
-          <View style={headerContainer}>
-            <HeaderTextWithAvatar
-              headerText={greetingOfTheDay()}
-              navigation={navigation}
-              currentUserContext={currentUserContext}
-            />
-          </View>
+  // if (!fontsLoaded) {
+  //   return <AppLoading />;
+  // } else
+  return (
+    // Overall Container Wrapper
+    <ScrollView
+      style={container}
+      showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[0]}
+      bounces={false}
+    >
+      {/* Header */}
+      <View style={headerWithoutSearch}>
+        <View style={headerContainer}>
+          <HeaderTextWithAvatar
+            headerText={greetingOfTheDay()}
+            navigation={navigation}
+            currentUserContext={currentUserContext}
+          />
         </View>
+      </View>
 
-        {/* Content Body */}
-        <Surface style={[summaryOverallBox, { height: 200 }]}>
-          <View style={summaryBoxRow}>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  updateTotalCustomers();
-                }}
-              >
-                <View style={summaryBoxTitleBox}>
-                  <Text style={summaryBoxTitle}>Total Customers</Text>
-                </View>
-                <Text style={summaryBoxContent}>
-                  {isLoadingTotalCustomers === true ? (
-                    <ActivityIndicator
-                      size={"small"}
-                      style={styles.activityIndicator}
-                      color={colors.theme}
-                    />
-                  ) : (
-                    customers.length * 100
-                  )}
-                </Text>
-
-                {isLoadingTotalCustomers != true && (
-                  <View style={summaryBoxSubContentContainer}>
-                    <Text
-                      style={[summaryBoxSubContent, { color: colors.green }]}
-                    >
-                      +17
-                    </Text>
-                    <Text style={summaryBoxSubContent}> from last month</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            </View>
-            <View style={verticleLine}></View>
-            <View>
+      {/* Content Body */}
+      <Surface style={[summaryOverallBox, { height: 200 }]}>
+        <View style={summaryBoxRow}>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                updateTotalCustomers();
+              }}
+            >
               <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Profit per customer</Text>
+                <Text style={summaryBoxTitle}>Total Customers</Text>
               </View>
               <Text style={summaryBoxContent}>
                 {isLoadingTotalCustomers === true ? (
@@ -270,22 +245,49 @@ const HomeScreen = ({ navigation }) => {
                     color={colors.theme}
                   />
                 ) : (
-                  "US$530"
+                  customers.length * 100
                 )}
               </Text>
 
               {isLoadingTotalCustomers != true && (
                 <View style={summaryBoxSubContentContainer}>
                   <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                    +0.35{" "}
+                    +17
                   </Text>
-                  <Text style={summaryBoxSubContent}>from last month</Text>
+                  <Text style={summaryBoxSubContent}> from last month</Text>
                 </View>
               )}
-            </View>
+            </TouchableOpacity>
           </View>
+          <View style={verticleLine}></View>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Profit per customer</Text>
+            </View>
+            <Text style={summaryBoxContent}>
+              {isLoadingTotalCustomers === true ? (
+                <ActivityIndicator
+                  size={"small"}
+                  style={styles.activityIndicator}
+                  color={colors.theme}
+                />
+              ) : (
+                "US$530"
+              )}
+            </Text>
 
-          {/* <View style={horizontalLine} />
+            {isLoadingTotalCustomers != true && (
+              <View style={summaryBoxSubContentContainer}>
+                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                  +0.35{" "}
+                </Text>
+                <Text style={summaryBoxSubContent}>from last month</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* <View style={horizontalLine} />
 
           <View style={summaryBoxRow}>
             <View>
@@ -335,130 +337,118 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View> */}
 
-          <View style={horizontalLine} />
+        <View style={horizontalLine} />
 
-          <View style={summaryBoxRow}>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  storeUser();
-                }}
-              >
-                <View style={summaryBoxTitleBox}>
-                  <Text style={summaryBoxTitle}>Expenses</Text>
-                </View>
-                <Text style={summaryBoxContent}>
-                  {isLoadingTotalCustomers === true ? (
-                    <ActivityIndicator
-                      size={"small"}
-                      style={styles.activityIndicator}
-                      color={colors.theme}
-                    />
-                  ) : (
-                    "US$54,393"
-                  )}
-                </Text>
-                {isLoadingTotalCustomers != true && (
-                  <View style={summaryBoxSubContentContainer}>
-                    <Text
-                      style={[summaryBoxSubContent, { color: colors.orange }]}
-                    >
-                      +1.2{" "}
-                    </Text>
-                    <Text style={summaryBoxSubContent}>from last month</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
+        <View style={summaryBoxRow}>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Expenses</Text>
             </View>
-            <View style={verticleLine}></View>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  updateSharePrice("CRM");
-                }}
-              >
-                <View style={summaryBoxTitleBox}>
-                  <Text style={summaryBoxTitle}>Stock price</Text>
-                </View>
-                <Text style={summaryBoxContent}>
-                  {isLoadingTotalCustomers === true ? (
-                    <ActivityIndicator
-                      size={"small"}
-                      style={styles.activityIndicator}
-                      color={colors.theme}
-                    />
-                  ) : (
-                    "US$" + stockPrice
-                  )}
+            <Text style={summaryBoxContent}>
+              {isLoadingTotalCustomers === true ? (
+                <ActivityIndicator
+                  size={"small"}
+                  style={styles.activityIndicator}
+                  color={colors.theme}
+                />
+              ) : (
+                "US$54,393"
+              )}
+            </Text>
+            {isLoadingTotalCustomers != true && (
+              <View style={summaryBoxSubContentContainer}>
+                <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
+                  +1.2{" "}
                 </Text>
-                {isLoadingTotalCustomers != true && (
-                  <View style={summaryBoxSubContentContainer}>
-                    <Text
-                      style={[summaryBoxSubContent, { color: colors.green }]}
-                    >
-                      Live Price
-                    </Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            </View>
+                <Text style={summaryBoxSubContent}>from last month</Text>
+              </View>
+            )}
           </View>
-        </Surface>
+          <View style={verticleLine}></View>
+          <View>
+            <TouchableOpacity
+              onPress={() => {
+                updateSharePrice("CRM");
+              }}
+            >
+              <View style={summaryBoxTitleBox}>
+                <Text style={summaryBoxTitle}>Stock price</Text>
+              </View>
+              <Text style={summaryBoxContent}>
+                {isLoadingTotalCustomers === true ? (
+                  <ActivityIndicator
+                    size={"small"}
+                    style={styles.activityIndicator}
+                    color={colors.theme}
+                  />
+                ) : (
+                  "US$" + stockPrice
+                )}
+              </Text>
+              {isLoadingTotalCustomers != true && (
+                <View style={summaryBoxSubContentContainer}>
+                  <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                    Live Price
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Surface>
 
-        {/* View for Retail, Commercial, Investment tab buttons */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 15,
+      {/* View for Retail, Commercial, Investment tab buttons */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: 15,
+        }}
+      >
+        <TouchableOpacity
+          style={[
+            page === "retail" ? activeSubTabButton : inactiveSubTabButton,
+          ]}
+          onPress={() => {
+            setPage("retail");
           }}
         >
-          <TouchableOpacity
-            style={[
-              page === "retail" ? activeSubTabButton : inactiveSubTabButton,
-            ]}
-            onPress={() => {
-              setPage("retail");
-            }}
-          >
-            <Text style={subTabText}>Retail</Text>
-          </TouchableOpacity>
+          <Text style={subTabText}>Retail</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[
-              page === "commercial" ? activeSubTabButton : inactiveSubTabButton,
-            ]}
-            onPress={() => {
-              setPage("commercial");
-            }}
-          >
-            <Text style={subTabText}>Commercial</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            page === "commercial" ? activeSubTabButton : inactiveSubTabButton,
+          ]}
+          onPress={() => {
+            setPage("commercial");
+          }}
+        >
+          <Text style={subTabText}>Commercial</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[
-              page === "investment" ? activeSubTabButton : inactiveSubTabButton,
-            ]}
-            onPress={() => {
-              setPage("investment");
-            }}
-          >
-            <Text style={subTabText}>Investment</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[
+            page === "investment" ? activeSubTabButton : inactiveSubTabButton,
+          ]}
+          onPress={() => {
+            setPage("investment");
+          }}
+        >
+          <Text style={subTabText}>Investment</Text>
+        </TouchableOpacity>
+      </View>
 
-        {/* Show page based on button pressed and pass down customer prop */}
-        {page === "retail" && (
-          <Retail currentUserContext={currentUserContext} />
-        )}
-        {page === "commercial" && (
-          <Commercial currentUserContext={currentUserContext} />
-        )}
-        {page === "investment" && (
-          <Investment currentUserContext={currentUserContext} />
-        )}
-      </ScrollView>
-    );
+      {/* Show page based on button pressed and pass down customer prop */}
+      {page === "retail" && <Retail currentUserContext={currentUserContext} />}
+      {page === "commercial" && (
+        <Commercial currentUserContext={currentUserContext} />
+      )}
+      {page === "investment" && (
+        <Investment currentUserContext={currentUserContext} />
+      )}
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({

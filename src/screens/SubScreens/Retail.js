@@ -28,6 +28,7 @@ const Retail = ({ currentUserContext }) => {
   // const customer_dashboard_url =
   //   "https://10az.online.tableau.com/t/gsisg/views/FIN_WM/Askme";
 
+  // if user has previously hot switched and set a viz/dashboard for demo purposes, this keeps it persistent
   const updateDashboardURL = async () => {
     try {
       const loadedDashboardURL = await AsyncStorage.getItem("dashboardURL");
@@ -77,6 +78,16 @@ const Retail = ({ currentUserContext }) => {
     `<body><tableau-viz id="tableauViz" src=${customerDashboardURL} toolbar="false" token="${JwtToken}" device="phone" height="1100"></tableau-viz></body>` +
     "</head></html>";
 
+  // if customerDashboardURL is not null, append the postfixes on URL for mobile view
+  if (customerDashboardURL) {
+    fullURL =
+      customerDashboardURL +
+      "?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n";
+  }
+
+  /* For hot switching demo purposes, we will not use the JWT example for Retail.js viz view.
+   Instead, we replaced the html snippet using jwt with just a custom fullURL which can be easily hot switched
+   For examples on using jwt authentication, refer to investment.js or commercial.js */
   return (
     <View style={styles.container}>
       <WebView
@@ -84,10 +95,7 @@ const Retail = ({ currentUserContext }) => {
         originWhitelist={["*"]}
         source={{
           // html: htmlCode,
-          // uri: "https://demo.tableau.com/t/customapp/views/Superstore/Overview?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
-          url:
-            customerDashboardURL +
-            "?:embed=y&:tooltip=n&:toolbar=n&:showVizHome=no&:mobile=y&:showAppBanner=n",
+          uri: fullURL,
         }}
       />
     </View>

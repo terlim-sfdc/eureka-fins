@@ -9,11 +9,12 @@ import {
   Linking,
   TouchableOpacity,
 } from "react-native";
-import AppLoading from "expo-app-loading";
 import colors from "../../assets/colors/colors";
 import uuid from "react-native-uuid";
 
 import { users } from "../../usersConfig";
+
+import * as SplashScreen from "expo-splash-screen";
 
 import { Surface, useTheme } from "react-native-paper";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -43,9 +44,6 @@ import {
   container,
   headerWithoutSearch,
   headerContainer,
-  subTabText,
-  activeSubTabButton,
-  inactiveSubTabButton,
   summaryOverallBox,
   summaryBoxRow,
   summaryBoxTitleBox,
@@ -60,6 +58,9 @@ import {
 } from "../styles";
 import HeaderTextWithAvatar from "../components/HeaderTextWithAvatar";
 import AppContext from "../components/AppContext";
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 /* Customer Detail Screen */
 
@@ -111,157 +112,152 @@ const CustomersScreen = ({ route, navigation }) => {
     ProximaNova: require("../../assets/fonts/Proxima-Nova.otf"),
   });
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else
-    return (
-      // Overall Container Wrapper
-      <ScrollView
-        style={container}
-        showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0]}
-        bounces={false}
-      >
-        {/* Header */}
-        <View style={headerWithoutSearch}>
-          <View style={headerContainer}>
-            <HeaderTextWithAvatar
-              headerText="Customers"
-              navigation={navigation}
-              currentUserContext={currentUserContext}
-            />
-          </View>
-        </View>
-
-        {/* Content Body */}
-        <Surface style={sectionSubHeadingBox}>
-          <Text style={sectionSubHeadingText}>
-            Customer Satisfaction Ratings
-          </Text>
-        </Surface>
-        <Surface style={summaryOverallBox}>
-          <View style={summaryBoxRow}>
-            <View>
-              <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(
-                    "slack://channel?team=T01GST6QY0G&id=C0380CQDRNU"
-                    // "slack://channel?team=T031V83SWDV&id=C03K7C9RN22"
-                  )
-                }
-              >
-                <View style={summaryBoxTitleBox}>
-                  <Text style={summaryBoxTitle}>Quality of service</Text>
-                </View>
-                <Text style={summaryBoxContent}>73/100</Text>
-
-                <View style={summaryBoxSubContentContainer}>
-                  <Text style={[summaryBoxSubContent, { color: colors.red }]}>
-                    -18
-                  </Text>
-                  <Text style={summaryBoxSubContent}> from last month</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={verticleLine}></View>
-            <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Speed of service</Text>
-              </View>
-              <Text style={summaryBoxContent}>60/100</Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +5{" "}
-                </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={horizontalLine} />
-
-          <View style={summaryBoxRow}>
-            <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Pricing</Text>
-              </View>
-              <Text style={summaryBoxContent}>65/100</Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  +5.3{" "}
-                </Text>
-                <Text style={summaryBoxSubContent}>from last month</Text>
-              </View>
-            </View>
-            <View style={verticleLine}></View>
-            <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Complaints</Text>
-              </View>
-              <Text style={summaryBoxContent}>439 cases</Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
-                  +34
-                </Text>
-                <Text style={summaryBoxSubContent}> from last month</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={horizontalLine} />
-
-          <View style={summaryBoxRow}>
-            <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Trust</Text>
-              </View>
-              <Text style={summaryBoxContent}>40%</Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
-                  -5%
-                </Text>
-                <Text style={summaryBoxSubContent}> from last month</Text>
-              </View>
-            </View>
-            <View style={verticleLine}></View>
-            <View>
-              <View style={summaryBoxTitleBox}>
-                <Text style={summaryBoxTitle}>Customer Sentiment</Text>
-              </View>
-              <Text style={summaryBoxContent}>
-                Good{" "}
-                <FontAwesome5
-                  name="smile"
-                  style={{ color: colors.green, fontSize: 20 }}
-                />
-              </Text>
-              <View style={summaryBoxSubContentContainer}>
-                <Text style={[summaryBoxSubContent, { color: colors.green }]}>
-                  81
-                </Text>
-                <Text style={summaryBoxSubContent}> out of 100</Text>
-              </View>
-            </View>
-          </View>
-        </Surface>
-
-        <Surface style={[sectionSubHeadingBox, { marginVertical: 0.3 }]}>
-          <Text style={sectionSubHeadingText}>
-            Customer Demographics & Insights
-          </Text>
-        </Surface>
-        <View style={styles.container}>
-          <WebView
-            scrollEnabled={true}
-            originWhitelist={["*"]}
-            source={{
-              html: htmlCode,
-            }}
-            style={styles.webview}
+  return (
+    // Overall Container Wrapper
+    <ScrollView
+      style={container}
+      showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[0]}
+      bounces={false}
+    >
+      {/* Header */}
+      <View style={headerWithoutSearch}>
+        <View style={headerContainer}>
+          <HeaderTextWithAvatar
+            headerText="Customers"
+            navigation={navigation}
+            currentUserContext={currentUserContext}
           />
         </View>
-      </ScrollView>
-    );
+      </View>
+
+      {/* Content Body */}
+      <Surface style={sectionSubHeadingBox}>
+        <Text style={sectionSubHeadingText}>Customer Satisfaction Ratings</Text>
+      </Surface>
+      <Surface style={summaryOverallBox}>
+        <View style={summaryBoxRow}>
+          <View>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  "slack://channel?team=T01GST6QY0G&id=C0380CQDRNU"
+                  // "slack://channel?team=T031V83SWDV&id=C03K7C9RN22"
+                )
+              }
+            >
+              <View style={summaryBoxTitleBox}>
+                <Text style={summaryBoxTitle}>Quality of service</Text>
+              </View>
+              <Text style={summaryBoxContent}>73/100</Text>
+
+              <View style={summaryBoxSubContentContainer}>
+                <Text style={[summaryBoxSubContent, { color: colors.red }]}>
+                  -18
+                </Text>
+                <Text style={summaryBoxSubContent}> from last month</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={verticleLine}></View>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Speed of service</Text>
+            </View>
+            <Text style={summaryBoxContent}>60/100</Text>
+            <View style={summaryBoxSubContentContainer}>
+              <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                +5{" "}
+              </Text>
+              <Text style={summaryBoxSubContent}>from last month</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={horizontalLine} />
+
+        <View style={summaryBoxRow}>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Pricing</Text>
+            </View>
+            <Text style={summaryBoxContent}>65/100</Text>
+            <View style={summaryBoxSubContentContainer}>
+              <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                +5.3{" "}
+              </Text>
+              <Text style={summaryBoxSubContent}>from last month</Text>
+            </View>
+          </View>
+          <View style={verticleLine}></View>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Complaints</Text>
+            </View>
+            <Text style={summaryBoxContent}>439 cases</Text>
+            <View style={summaryBoxSubContentContainer}>
+              <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
+                +34
+              </Text>
+              <Text style={summaryBoxSubContent}> from last month</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={horizontalLine} />
+
+        <View style={summaryBoxRow}>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Trust</Text>
+            </View>
+            <Text style={summaryBoxContent}>40%</Text>
+            <View style={summaryBoxSubContentContainer}>
+              <Text style={[summaryBoxSubContent, { color: colors.orange }]}>
+                -5%
+              </Text>
+              <Text style={summaryBoxSubContent}> from last month</Text>
+            </View>
+          </View>
+          <View style={verticleLine}></View>
+          <View>
+            <View style={summaryBoxTitleBox}>
+              <Text style={summaryBoxTitle}>Customer Sentiment</Text>
+            </View>
+            <Text style={summaryBoxContent}>
+              Good{" "}
+              <FontAwesome5
+                name="smile"
+                style={{ color: colors.green, fontSize: 20 }}
+              />
+            </Text>
+            <View style={summaryBoxSubContentContainer}>
+              <Text style={[summaryBoxSubContent, { color: colors.green }]}>
+                81
+              </Text>
+              <Text style={summaryBoxSubContent}> out of 100</Text>
+            </View>
+          </View>
+        </View>
+      </Surface>
+
+      <Surface style={[sectionSubHeadingBox, { marginVertical: 0.3 }]}>
+        <Text style={sectionSubHeadingText}>
+          Customer Demographics & Insights
+        </Text>
+      </Surface>
+      <View style={styles.container}>
+        <WebView
+          scrollEnabled={true}
+          originWhitelist={["*"]}
+          source={{
+            html: htmlCode,
+          }}
+          style={styles.webview}
+        />
+      </View>
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
